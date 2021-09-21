@@ -1,7 +1,8 @@
 const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
-const Account = require('../models/account.model');
 const { Closet } = require('../models');
+
+const clothesService = require('./clothing.service');
 
 /**
  * Query for closets
@@ -49,6 +50,19 @@ const updateClosetById = async (closetId, updateRequest) => {
   return closet;
 };
 
+const addClothesById = async (closetId, updateRequest) => {
+  const closet = await getClosetById(closetId);
+  if (!closet) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Closet not found');
+  }
+
+  updateRequest.forEach(element => clothesService.changeCloset(closet, element));
+
+  Object.assign(closet, updateRequest);
+  await closet.save();
+  return closet;
+};
+
 const deleteClosetById = async (closetId) => {
   const closet = await getClosetById(closetId);
   if (!closet) {
@@ -64,5 +78,6 @@ module.exports = {
   getClosetById,
   createCloset,
   updateClosetById,
+  addClothesById,
   deleteClosetById,
 };

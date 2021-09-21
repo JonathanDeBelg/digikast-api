@@ -6,6 +6,7 @@ const { Account } = require('../models');
  * @returns {Promise<User>}
  */
 const createAccount = async (requestBody) => {
+  console.log(requestBody.account);
   const account = new Account({
     name: requestBody.name,
     type: accountTypes[requestBody.account],

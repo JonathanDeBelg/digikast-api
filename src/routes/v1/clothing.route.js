@@ -1,25 +1,25 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
-const closetController = require('../../controllers/closet.controller');
+const validate = require('../../middlewares/validate');
+const clothingController = require('../../controllers/clothing.controller');
+const clothingValidation = require('../../validations/clothing.validation');
 
 const router = express.Router();
 
 router
+  .route('/:closet')
+  .get(auth(), clothingController.getClothes)
+
+router
+  .route('/:closet/:garmentId')
+  .get(auth(), clothingController.getGarment)
+  .put(auth(), clothingController.updateGarment)
+  .delete(auth(), clothingController.deleteGarment);
+  
+router
   .route('/')
-  .get(auth(), closetController.getClosets)
-  .post(auth(), closetController.createCloset);
-
-
-router
-  .route('/:closetId')
-  .get(auth(), closetController.getCloset)
-  .put(auth(), closetController.updateCloset)
-  .delete(auth(), closetController.deleteCloset);
-
-router
-  .route('/:closetId/addClothes')
-  .put(auth(), closetController.addClothesToCloset);
-
+  .get(auth(), clothingController.getAllClothes)
+  .post([auth(), validate(clothingValidation.create)], clothingController.createGarment);
 
 module.exports = router;
 
@@ -36,7 +36,7 @@ module.exports = router;
  *   post:
  *     summary: Create a closet
  *     tags: [Closets]
- *     security:
+ *     security: 
  *       - bearerAuth: []
  *     requestBody:
  *       required: true

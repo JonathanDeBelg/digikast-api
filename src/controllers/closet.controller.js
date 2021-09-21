@@ -29,6 +29,11 @@ const updateCloset = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(closet);
 });
 
+const addClothesToCloset = catchAsync(async (req, res) => {
+  const closet = await closetService.addClothesById(req.params.closetId, req.body);
+  res.status(httpStatus.OK).send(closet);
+});
+
 const deleteCloset = catchAsync(async (req, res) => {
   const closet = await closetService.deleteClosetById(req.params.closetId);
   res.status(httpStatus.OK).send(closet);
@@ -39,5 +44,6 @@ module.exports = {
   getCloset,
   createCloset,
   updateCloset,
+  addClothesToCloset,
   deleteCloset,
 };
