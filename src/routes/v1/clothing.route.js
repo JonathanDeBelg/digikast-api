@@ -3,8 +3,10 @@ const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
 const clothingController = require('../../controllers/clothing.controller');
 const clothingValidation = require('../../validations/clothing.validation');
+const multer = require('multer');
 
 const router = express.Router();
+const upload = multer();
 
 router
   .route('/:closet')
@@ -19,7 +21,11 @@ router
 router
   .route('/')
   .get(auth(), clothingController.getAllClothes)
-  .post([auth(), validate(clothingValidation.create)], clothingController.createGarment);
+  // .post([auth(), validate(clothingValidation.create)], clothingController.createGarment);
+  .post(upload.single('image'), [auth(), validate(clothingValidation.create)], function(req, res, next) {   
+    return clothingController.createGarment(req, res, next);    
+  });
+  
 
 module.exports = router;
 

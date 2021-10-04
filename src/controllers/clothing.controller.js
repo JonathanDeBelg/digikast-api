@@ -25,7 +25,7 @@ const getGarment = catchAsync(async (req, res) => {
 
 const createGarment = catchAsync(async (req, res) => {
   const closet = await Closet.findById(req.body.closetId);
-  const garment = await clothingService.createGarment(req.body, closet);
+  const garment = await clothingService.createGarment(req, closet);
   res.status(httpStatus.CREATED).send(garment);
 });
 

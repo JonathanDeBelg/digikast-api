@@ -1,6 +1,8 @@
 const ApiError = require("../utils/ApiError");
+const uploadFile = require("../utils/AWSFileUploader");
 const httpStatus = require("http-status");
 const { Garment } = require('../models');
+const AWS = require("aws-sdk")
 
 /**
  * Query for clothes
@@ -32,12 +34,14 @@ const getGarmentById = async (id) => {
   return Garment.findById(id);
 };
 
-const createGarment = async (garmentBody, closet) => {
+const createGarment = async (req, closet) => {
+  var filePath = await uploadFile(req);
+
   const garment = await Garment.create({
-    name: garmentBody.name,
-    path: garmentBody.path,
-    type: garmentBody.type,
-    colour: garmentBody.colour,
+    name: req.body.name,
+    path: filePath.Location,
+    type: req.body.type,
+    colour: req.body.colour,
     closet,
   });
   return garment;
