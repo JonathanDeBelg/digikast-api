@@ -21,7 +21,6 @@ router
 router
   .route('/')
   .get(auth(), clothingController.getAllClothes)
-  // .post([auth(), validate(clothingValidation.create)], clothingController.createGarment);
   .post(upload.single('image'), [auth(), validate(clothingValidation.create)], function(req, res, next) {   
     return clothingController.createGarment(req, res, next);    
   });

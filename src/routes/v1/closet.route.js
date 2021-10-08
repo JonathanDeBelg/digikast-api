@@ -18,7 +18,7 @@ router
 
 router
   .route('/:closetId/addClothes')
-  .put(auth(), closetController.addClothesToCloset);
+  .post(auth(), closetController.addClothesToCloset);
 
 
 module.exports = router;
