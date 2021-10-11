@@ -68,7 +68,7 @@ const deleteGarmentById = async (params) => {
   }
 
   await garment.remove();
-  return garment;
+  return;
 };
 
 const changeCloset = async (closet, garmentId) => {
