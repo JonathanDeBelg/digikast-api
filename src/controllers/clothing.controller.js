@@ -36,7 +36,7 @@ const updateGarment = catchAsync(async (req, res) => {
 
 const deleteGarment = catchAsync(async (req, res) => {
   console.log(req.params)
-  await clothingService.deleteGarmentById(req.params);
+  await clothingService.deleteGarmentById(req.params.garmentId);
   res.status(httpStatus.OK);
 });
 
