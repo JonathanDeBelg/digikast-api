@@ -34,10 +34,9 @@ const updateGarment = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(garment);
 });
 
-const deleteGarment = catchAsync(async (req, res) => {
-  console.log(req.params)
+const deleteGarment = catchAsync(async (req, res) => {  
   await clothingService.deleteGarmentById(req.params.garmentId);
-  res.status(httpStatus.OK);
+  res.status(httpStatus.OK).send("Succesfull deletion");
 });
 
 module.exports = {
