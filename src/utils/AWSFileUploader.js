@@ -25,10 +25,10 @@ const uploadFile = async (req) => {
     }).promise()
 };
 
-const removeFile = async (req) => {
+const removeFile = async (filePath, userID) => {
     const params = {
         Bucket: process.env.S3_BUCKET_NAME,
-        Key: req.user.id + '/' + req.file.originalname,
+        Key: userID + '/' + filePath,
     };
 
     return s3.deleteObject(params, function(s3Err, data) {
