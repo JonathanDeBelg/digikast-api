@@ -27,6 +27,7 @@ const uploadFile = async (req) => {
 
 const removeFile = async (filePath, userID) => {
     const params = {
+        Bucket: process.env.S3_BUCKET_NAME,
         Key: userID.id + '/' + filePath.split('/').pop(),
     };
 
