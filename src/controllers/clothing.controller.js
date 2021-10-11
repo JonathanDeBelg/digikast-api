@@ -36,7 +36,7 @@ const updateGarment = catchAsync(async (req, res) => {
 
 const deleteGarment = catchAsync(async (req, res) => {
   await clothingService.deleteGarmentById(req.params.garmentId);
-  res.status(httpStatus.OK).send("garment");
+  res.status(httpStatus.OK);
 });
 
 module.exports = {

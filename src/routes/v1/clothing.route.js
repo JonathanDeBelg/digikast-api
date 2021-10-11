@@ -9,7 +9,7 @@ const router = express.Router();
 const upload = multer();
 
 router
-  .route('/:closet')
+  .route('/:closet/')
   .get(auth(), clothingController.getClothes)
 
 router
