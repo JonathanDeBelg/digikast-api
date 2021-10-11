@@ -61,8 +61,9 @@ const updateGarmentById = async (garmentId, updateRequest) => {
   return garment;
 };
 
-const deleteGarmentById = async (params) => {
-  const garment = await getGarmentById(params.garmentId);
+const deleteGarmentById = async (garmentId) => {
+  console.log(garmentId);
+  const garment = await getGarmentById(garmentId);
   if (!garment) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Garment not found');
   }
