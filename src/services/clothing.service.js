@@ -62,7 +62,7 @@ const updateGarmentById = async (garmentId, updateRequest) => {
 };
 
 const deleteGarmentById = async (garmentId) => {
-  console.log(queryAllClothes());
+  console.log(await queryAllClothes());
   Garment.findByIdAndDelete(garmentId, function (err) {
     if(err) throw new ApiError(httpStatus.NOT_FOUND, 'Garment not found');
     console.log("Successful deletion");
