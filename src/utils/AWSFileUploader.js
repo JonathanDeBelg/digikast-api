@@ -31,6 +31,8 @@ const removeFile = async (filePath, userID) => {
         Key: userID + '/' + filePath,
     };
 
+    console.log(params);
+
     return s3.deleteObject(params, function(s3Err, data) {
         if (s3Err) {
             console.log("Got error:", s3Err.message);
