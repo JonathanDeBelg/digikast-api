@@ -25,4 +25,24 @@ const uploadFile = async (req) => {
     }).promise()
 };
 
-module.exports = uploadFile;
+const removeFile = async (req) => {
+    const params = {
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: req.user.id + '/' + req.file.originalname,
+    };
+
+    return s3.deleteObject(params, function(s3Err, data) {
+        if (s3Err) {
+            console.log("Got error:", s3Err.message);
+            console.log("Request:");
+            console.log(this.request.httpRequest);
+            console.log("Response:");
+            console.log(this.httpResponse);
+        }
+    }).promise()
+};
+
+module.exports = {
+    uploadFile,
+    removeFile
+};

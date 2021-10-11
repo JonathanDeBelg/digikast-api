@@ -1,5 +1,5 @@
 const ApiError = require("../utils/ApiError");
-const uploadFile = require("../utils/AWSFileUploader");
+const { uploadFile, removeFile } = require("../utils/AWSFileUploader");
 const httpStatus = require("http-status");
 const { Garment } = require('../models');
 const AWS = require("aws-sdk")
@@ -62,6 +62,9 @@ const updateGarmentById = async (garmentId, updateRequest) => {
 };
 
 const deleteGarmentById = async (garmentId) => {
+  const garment = await getGarmentById(garmentId);
+  await removeFile(garment.path);
+
   Garment.findByIdAndDelete(garmentId, function (err) {
     if(err) throw new ApiError(httpStatus.NOT_FOUND, err);
     return;
