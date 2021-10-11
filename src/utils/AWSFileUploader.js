@@ -32,10 +32,7 @@ const removeFile = async (filePath, userID) => {
         Key: userID.id + '/' + filePath.split('/').pop(),
     };
 
-    console.log(params);
-    console.log(filePath)
-
-    return s3.deleteObject(params, function(s3Err, data) {
+    s3.deleteObject(params, function(s3Err, data) {
         if (s3Err) {
             console.log("Got error:", s3Err.message);
             console.log("Request:");
@@ -44,6 +41,7 @@ const removeFile = async (filePath, userID) => {
             console.log(this.httpResponse);
         }
     }).promise()
+    return;
 };
 
 module.exports = {
