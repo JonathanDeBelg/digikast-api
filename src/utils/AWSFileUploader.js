@@ -32,7 +32,7 @@ const removeFile = async (filePath, userID) => {
         region: process.env.S3_BUCKET_REGION,
     });
     const params = {
-        Bucket: '',
+        Bucket: ' ',
         Key: userID.id + '/' + filePath.split('/').pop(),
     };
 
