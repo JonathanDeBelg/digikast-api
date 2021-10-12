@@ -65,7 +65,7 @@ const deleteGarmentById = async (req) => {
   const garment = await getGarmentById(req.params.garmentId);
   await removeFile(garment.path, req.user);
 
-  Garment.findByIdAndDelete(garmentId, function (err) {
+  Garment.findByIdAndDelete(req.params.garmentId, function (err) {
     if(err) throw new ApiError(httpStatus.NOT_FOUND, err);
     return;
   });
