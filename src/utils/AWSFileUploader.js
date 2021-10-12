@@ -26,9 +26,13 @@ const uploadFile = async (req) => {
 };
 
 const removeFile = async (filePath, userID) => {
-    var s3 = new AWS.S3();
+    var s3 = new AWS.S3({
+        accessKeyId: process.env.S3_BUCKET_ACCESS,
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+        region: process.env.S3_BUCKET_REGION,
+    });
     const params = {
-        Bucket: process.env.S3_BUCKET_NAME,
+        Bucket: '',
         Key: userID.id + '/' + filePath.split('/').pop(),
     };
 
