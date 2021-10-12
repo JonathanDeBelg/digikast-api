@@ -16,6 +16,7 @@ router
   .route('/:closet/:garmentId')
   .get(auth(), clothingController.getGarment)
   .put(auth(), clothingController.updateGarment)
+  .post(auth(), clothingController.createGarment)
   .delete(auth(), clothingController.deleteGarment);
   
 router
