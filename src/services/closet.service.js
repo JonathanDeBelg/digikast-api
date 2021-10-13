@@ -32,6 +32,7 @@ const createCloset = async (closetBody, account) => {
   const closet = await Closet.create({
     name: closetBody.name,
     account,
+    type: closetBody.type
   });
   return closet;
 };

@@ -1,11 +1,16 @@
 const clothingTypes = {
   TOPS: 'T-shirt',
-  BOTTOMS: 'Broeken',
   COATS: 'Jassen',
   SWIMWEAR: 'Zwemkleding',
   UNDERWEAR: 'Ondergoed',
   ACCESOIRES: 'Accesoires',
   SHOES: 'Schoenen',
+  SWEATER: 'Trui',
+  BLOUSE: 'Blouse',
+  SHORTBOTTOMS: 'Korte broeken',
+  LONGBOTTOMS: 'Lange broeken',
+  DRESS: 'Jurkje',
+  SKIRT: 'Rokje'
 };
 
 const colourTypes = {
@@ -16,6 +21,11 @@ const colourTypes = {
   WHITE: 'Wit',
   BLACK: 'Zwart',
   PURPLE: 'Paars',
+  PINK: 'Roze',
+  GREY: 'Grijs',
+  ORANGE: 'Oranje',
+  BEIGE: 'Beige',
+  BROWN: 'Bruin'
 };
 
 module.exports = {

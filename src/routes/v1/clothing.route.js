@@ -16,17 +16,15 @@ router
   .route('/:closet/:garmentId')
   .get(auth(), clothingController.getGarment)
   .put(auth(), clothingController.updateGarment)
-  .post(auth(), clothingController.createGarment)
   .delete(auth(), clothingController.deleteGarment);
   
 router
   .route('/')
   .get(auth(), clothingController.getAllClothes)
-  .post(upload.single('image'), [auth(), validate(clothingValidation.create)], function(req, res, next) {   
+  .post(upload.single('image'), [auth(), validate(clothingValidation.create)], function(req, res, next) { 
     return clothingController.createGarment(req, res, next);    
   });
   
-
 module.exports = router;
 
 /**

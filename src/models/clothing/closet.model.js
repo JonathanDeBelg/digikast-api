@@ -12,6 +12,10 @@ const closetSchema = mongoose.Schema(
       type: mongoose.SchemaTypes.ObjectId,
       required: true,
     },
+    type: {
+      type: Boolean,
+      required: true,
+    },
   },
   {
     timestamps: true,
