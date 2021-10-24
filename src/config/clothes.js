@@ -7,8 +7,8 @@ const clothingTypes = {
   SHOES: 'Schoenen',
   SWEATER: 'Trui',
   BLOUSE: 'Blouse',
-  SHORTBOTTOMS: 'Korte broeken',
-  LONGBOTTOMS: 'Lange broeken',
+  SHORTBOTTOMS: 'Korte broek',
+  LONGBOTTOMS: 'Lange broek',
   DRESS: 'Jurkje',
   SKIRT: 'Rokje'
 };
