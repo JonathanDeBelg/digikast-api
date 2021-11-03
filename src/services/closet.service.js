@@ -3,6 +3,7 @@ const httpStatus = require("http-status");
 const { Closet } = require('../models');
 
 const clothesService = require('./clothing.service');
+const { numberOfClosets } = require("../config/account");
 
 /**
  * Query for closets
@@ -25,10 +26,24 @@ const getClosetById = async (id) => {
   return Closet.findById(id);
 };
 
+const numberofClosestBelowMax = async (account, type) => {
+  var configVar = type ? numberOfClosets.CLOSET : numberOfClosets.SUITCASE; 
+  
+  return Closet.where({account: account, type: type}).countDocuments(function (err, count) {
+    if (err) return handleError(err);
+    return count <= configVar;
+  });
+};
+
 const createCloset = async (closetBody, account) => {
   if (await Closet.isNameDuplicate(closetBody.name)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Name is duplicate');
   }
+
+  if(!await numberofClosestBelowMax(account, closetBody.type)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Too many ' + closetBody.type ? 'closets' : 'suitcases');
+  }
+
   const closet = await Closet.create({
     name: closetBody.name,
     account,

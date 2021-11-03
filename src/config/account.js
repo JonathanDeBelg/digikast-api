@@ -5,6 +5,12 @@ const accountTypes = {
   TRAIL: 'Proef',
 };
 
+const numberOfClosets = {
+  CLOSET: 4,
+  SUITCASE: 2
+}
+
 module.exports = {
   accountTypes,
+  numberOfClosets
 };

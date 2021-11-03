@@ -1,13 +1,15 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
+const validate = require('../../middlewares/validate');
 const closetController = require('../../controllers/closet.controller');
+const closetValidation = require('../../validations/closet.validation');
 
 const router = express.Router();
 
 router
   .route('/')
   .get(auth(), closetController.getClosets)
-  .post(auth(), closetController.createCloset);
+  .post([auth(), validate(closetValidation.create)], closetController.createCloset);
 
 
 router
