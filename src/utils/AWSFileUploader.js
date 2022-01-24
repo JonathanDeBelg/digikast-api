@@ -6,11 +6,11 @@ const s3 = new AWS.S3({
     region: process.env.S3_BUCKET_REGION
 });
 
-const uploadFile = async (req) => {
+const uploadFile = async(file, req) => {
     const params = {
         Bucket: process.env.S3_BUCKET_NAME,
-        Key: req.user.id + '/' + req.file.originalname,
-        Body: req.file.buffer,
+        Key: req.user.id + '/' + reqr.file.oiginalname,
+        Body: file.buffer,
     };
 
     return s3.upload(params, function(s3Err, data) {
@@ -25,7 +25,7 @@ const uploadFile = async (req) => {
     }).promise()
 };
 
-const removeFile = async (filePath, userID) => {
+const removeFile = async(filePath, userID) => {
     var s3 = new AWS.S3({
         accessKeyId: process.env.S3_BUCKET_ACCESS,
         secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
@@ -37,15 +37,15 @@ const removeFile = async (filePath, userID) => {
     };
 
     try {
-    s3.deleteObject(params, function(s3Err, data) {
-        if (s3Err) {
-            console.log("Got error:", s3Err.message);
-            console.log("Request:");
-            console.log(this.request.httpRequest);
-            console.log("Response:");
-            console.log(this.httpResponse);
-        }
-    })
+        s3.deleteObject(params, function(s3Err, data) {
+            if (s3Err) {
+                console.log("Got error:", s3Err.message);
+                console.log("Request:");
+                console.log(this.request.httpRequest);
+                console.log("Response:");
+                console.log(this.httpResponse);
+            }
+        })
     } catch (e) {
         console.log(e);
     }
