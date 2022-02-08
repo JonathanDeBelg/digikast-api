@@ -6,6 +6,7 @@ const create = {
     type: Joi.string().required(),
     colour: Joi.string().required(),
     closetId: Joi.string().required(),
+    filePath: Joi.string().required(),
   }),
 };
 

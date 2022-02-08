@@ -16,6 +16,17 @@ const createAccount = async (requestBody) => {
   return account;
 };
 
+const createDeviceAccount = async (requestBody) => {
+  console.log(requestBody.account);
+  const account = new Account({
+    type: accountTypes[requestBody.account],
+  });
+
+  await account.save();
+  return account;
+};
+
 module.exports = {
   createAccount,
+  createDeviceAccount,
 };

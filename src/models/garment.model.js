@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { clothingTypes, colourTypes } = require('../config/clothes');
-const { toJSON  } = require('./plugins');
+const { toJSON } = require('./plugins');
 
 const garmentSchema = mongoose.Schema(
   {
@@ -13,19 +13,19 @@ const garmentSchema = mongoose.Schema(
       required: true,
     },
     type: {
-        type: String,
-        enum: clothingTypes,
-        required: true,
+      type: String,
+      enum: clothingTypes,
+      required: true,
     },
     colour: {
       type: String,
       enum: colourTypes,
       required: true,
-  },
+    },
     closet: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'Closet',
-        required: true,
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'Closet',
+      required: true,
     },
   },
   {

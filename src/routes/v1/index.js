@@ -3,6 +3,7 @@ const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const closetRoute = require('./closet.route');
 const clothingRoute = require('./clothing.route');
+const imageRoute = require('./image.route');
 const docsRoute = require('./docs.route');
 const config = require('../../config/config');
 
@@ -24,6 +25,10 @@ const defaultRoutes = [
   {
     path: '/clothes',
     route: clothingRoute,
+  },
+  {
+    path: '/image',
+    route: imageRoute,
   },
 ];
 

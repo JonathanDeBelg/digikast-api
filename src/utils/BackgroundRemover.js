@@ -1,24 +1,26 @@
-const axios = require('axios')
+const axios = require('axios');
+const FormData = require('form-data');
+const fs = require('fs');
 
-const removeBackground = async(req) => {
-    // process.env
-    axios
-        .post(process.env.BACKGROUND_REM_URL, {
-            image: req.file.buffer
-        }).promise();
+const removeBackground = async (req) => {
+  const bodyFormData = new FormData();
+  bodyFormData.append('file', req.file.buffer, req.file.originalname);
 
-    return s3.upload(params, function(s3Err, data) {
-        if (s3Err) {
-            console.log("Got error:", s3Err.message);
-            console.log("Request:");
-            console.log(this.request.httpRequest);
-            console.log("Response:");
-            console.log(this.httpResponse);
-        }
-        filePath = data.Location;
-    }).promise()
+  try {
+    const response = await axios.post(process.env.BACKGROUND_REM_URL, bodyFormData, {
+      headers: bodyFormData.getHeaders(),
+      auth: {
+        username: 'admin',
+        password: 'Admin!123',
+      },
+    });
+
+    return response.data;
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 module.exports = {
-    removeBackground
-}
+  removeBackground,
+};

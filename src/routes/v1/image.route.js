@@ -1,29 +1,18 @@
 const express = require('express');
-const multer = require('multer');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const clothingController = require('../../controllers/clothing.controller');
-const clothingValidation = require('../../validations/clothing.validation');
-
-const router = express.Router();
+const imageController = require('../../controllers/image.controller');
+const imageValidation = require('../../validations/image.validation');
+const multer = require("multer");
 const upload = multer();
 
-router.route('/:closet/').get(auth(), clothingController.getClothes);
+const router = express.Router();
 
 router
-  .route('/:closet/:garmentId')
-  .get(auth(), clothingController.getGarment)
-  .put(auth(), clothingController.updateGarment)
-  .delete(auth(), clothingController.deleteGarment);
-
-router
-  .route('/:closet/:garmentId/comparableItems')
-  .get(auth(), clothingController.getComperableGarments);
-
-router
-  .route('/')
-  .get(auth(), clothingController.getAllClothes)
-  .post([auth(), validate(clothingValidation.create)], clothingController.createGarment);
+  .route('/remove-bg')
+  .post(upload.single('file'), [auth(), validate(imageValidation.removeImageBackground)], function (req, res, next) {
+    return imageController.removeImageBackground(req, res, next);
+  });
 
 module.exports = router;
 

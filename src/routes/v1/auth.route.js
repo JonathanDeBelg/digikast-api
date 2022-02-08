@@ -15,8 +15,8 @@ router.post('/reset-password', validate(authValidation.resetPassword), authContr
 router.post('/send-verification-email', auth(), authController.sendVerificationEmail);
 router.post('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail);
 
-router.post('/device/register', validate(authValidation.deviceRegister), authController.registerDevice);
-router.post('/device/login', validate(authValidation.deviceLogin), authController.loginDevice);
+router.post('/device/register', validate(authValidation.registerDevice), authController.registerDevice);
+router.post('/device/login', validate(authValidation.loginDevice), authController.loginDevice);
 
 module.exports = router;
 

@@ -4,59 +4,61 @@ const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
 const { roles } = require('../config/roles');
 
-const userSchema = mongoose.Schema({
+const userSchema = mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: false,
-        trim: true,
+      type: String,
+      required: false,
+      trim: true,
     },
     email: {
-        type: String,
-        required: false,
-        unique: true,
-        trim: true,
-        lowercase: true,
-        validate(value) {
-            if (!validator.isEmail(value)) {
-                throw new Error('Invalid email');
-            }
-        },
+      type: String,
+      required: false,
+      unique: true,
+      trim: true,
+      lowercase: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error('Invalid email');
+        }
+      },
     },
     password: {
-        type: String,
-        required: false,
-        trim: true,
-        minlength: 8,
-        validate(value) {
-            if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
-                throw new Error('Password must contain at least one letter and one number');
-            }
-        },
-        private: true, // used by the toJSON plugin
+      type: String,
+      required: false,
+      trim: true,
+      minlength: 8,
+      validate(value) {
+        if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
+          throw new Error('Password must contain at least one letter and one number');
+        }
+      },
+      private: true, // used by the toJSON plugin
     },
-    devideId: {
-        type: String,
-        required: false,
-        minlength: 8,
-        private: true, // used by the toJSON plugin
+    deviceId: {
+      type: String,
+      required: false,
+      minlength: 8,
     },
     role: {
-        type: String,
-        enum: roles,
-        default: 'user',
+      type: String,
+      enum: roles,
+      default: 'user',
     },
     isEmailVerified: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
     },
     account: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'Account',
-        required: false,
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'Account',
+      required: false,
     },
-}, {
+  },
+  {
     timestamps: true,
-});
+  }
+);
 
 // add plugin that converts mongoose to json
 userSchema.plugin(toJSON);
@@ -68,9 +70,9 @@ userSchema.plugin(paginate);
  * @param {ObjectId} [excludeUserId] - The id of the user to be excluded
  * @returns {Promise<boolean>}
  */
-userSchema.statics.isEmailTaken = async function(email, excludeUserId) {
-    const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
-    return !!user;
+userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
+  const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
+  return !!user;
 };
 
 /**
@@ -79,9 +81,9 @@ userSchema.statics.isEmailTaken = async function(email, excludeUserId) {
  * @param {ObjectId} [excludeUserId] - The id of the device to be excluded
  * @returns {Promise<boolean>}
  */
-userSchema.statics.isEmailTaken = async function(emdeviceIdail, excludeUserId) {
-    const user = await this.findOne({ deviceId, _id: { $ne: excludeUserId } });
-    return !!user;
+userSchema.statics.isDeviceIdAlreadyRegistered = async function (deviceId, excludeUserId) {
+  const user = await this.findOne({ deviceId, _id: { $ne: excludeUserId } });
+  return !!user;
 };
 
 /**
@@ -89,17 +91,17 @@ userSchema.statics.isEmailTaken = async function(emdeviceIdail, excludeUserId) {
  * @param {string} password
  * @returns {Promise<boolean>}
  */
-userSchema.methods.isPasswordMatch = async function(password) {
-    const user = this;
-    return bcrypt.compare(password, user.password);
+userSchema.methods.isPasswordMatch = async function (password) {
+  const user = this;
+  return bcrypt.compare(password, user.password);
 };
 
-userSchema.pre('save', async function(next) {
-    const user = this;
-    if (user.isModified('password')) {
-        user.password = await bcrypt.hash(user.password, 8);
-    }
-    next();
+userSchema.pre('save', async function (next) {
+  const user = this;
+  if (user.isModified('password')) {
+    user.password = await bcrypt.hash(user.password, 8);
+  }
+  next();
 });
 
 /**
