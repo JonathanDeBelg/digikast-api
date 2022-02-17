@@ -45,6 +45,7 @@ const createGarment = async (req, closet) => {
     favorite: req.body.favorite,
     closet,
   });
+  console.log(garment);
   return garment;
 };
 
