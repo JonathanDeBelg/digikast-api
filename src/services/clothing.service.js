@@ -41,6 +41,8 @@ const createGarment = async (req, closet) => {
     path: req.body.filePath,
     type: req.body.type,
     colour: req.body.colour,
+    occasion: req.body.occasion,
+    favorite: req.body.favorite,
     closet,
   });
   return garment;
