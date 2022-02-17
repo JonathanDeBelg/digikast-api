@@ -28,7 +28,14 @@ const colourTypes = {
   BROWN: 'Bruin'
 };
 
+const occasions = {
+  PARTY: 'Feest',
+  SCHOOL: 'School',
+  WORK: 'Werk',
+};
+
 module.exports = {
   clothingTypes,
   colourTypes,
+  occasions
 };

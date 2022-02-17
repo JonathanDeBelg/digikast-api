@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { clothingTypes, colourTypes } = require('../../config/clothes');
+const { clothingTypes, colourTypes, occasions } = require('../../config/clothes');
 const { toJSON } = require('../plugins');
 
 const clothesSchema = mongoose.Schema(
@@ -21,6 +21,15 @@ const clothesSchema = mongoose.Schema(
     type: {
       type: String,
       enum: clothingTypes,
+      required: true,
+    },
+    occasion: {
+      type: String,
+      enum: occasions,
+      required: true,
+    },
+    favorite: {
+      type: Boolean,
       required: true,
     },
     closet: {
