@@ -27,8 +27,8 @@ const getClosetById = async (id) => {
 };
 
 const numberofClosestBelowMax = async (account, type) => {
-  var configVar = type ? numberOfClosets.CLOSET : numberOfClosets.SUITCASE; 
-  
+  var configVar = type ? numberOfClosets.CLOSET : numberOfClosets.SUITCASE;
+
   return Closet.where({account: account, type: type}).countDocuments(function (err, count) {
     if (err) return handleError(err);
     return count <= configVar;
@@ -40,8 +40,9 @@ const createCloset = async (closetBody, account) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Name is duplicate');
   }
 
-  if(!await numberofClosestBelowMax(account, closetBody.type)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Too many ' + closetBody.type ? 'closets' : 'suitcases');
+  if (!(await numberofClosestBelowMax(account, closetBody.type))) {
+    const closetType = closetBody.type ? 'closets' : 'suitcases';
+    throw new ApiError(httpStatus.BAD_REQUEST, `Too many ${closetType}`);
   }
 
   const closet = await Closet.create({
