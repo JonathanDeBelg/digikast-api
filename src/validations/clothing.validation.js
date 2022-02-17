@@ -8,7 +8,7 @@ const create = {
     closetId: Joi.string().required(),
     filePath: Joi.string().required(),
     occasion: Joi.string().required(),
-    favorite: Joi.bool().required()
+    favorite: Joi.bool().required(),
   }),
 };
 
