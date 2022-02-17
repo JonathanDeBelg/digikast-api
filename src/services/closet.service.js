@@ -40,10 +40,10 @@ const createCloset = async (closetBody, account) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Name is duplicate');
   }
 
-  if (!(await numberofClosestBelowMax(account, closetBody.type))) {
-    const closetType = closetBody.type ? 'closets' : 'suitcases';
-    throw new ApiError(httpStatus.BAD_REQUEST, `Too many ${closetType}`);
-  }
+  // if (!(await numberofClosestBelowMax(account, closetBody.type))) {
+  //   const closetType = closetBody.type ? 'closets' : 'suitcases';
+  //   throw new ApiError(httpStatus.BAD_REQUEST, `Too many ${closetType}`);
+  // }
 
   const closet = await Closet.create({
     name: closetBody.name,
