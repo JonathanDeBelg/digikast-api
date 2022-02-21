@@ -33,7 +33,6 @@ const createUser = async (userBody, account) => {
     });
   }
 
-  console.log(user)
   user.save(function (err) {
     if (err) throw new ApiError(httpStatus.BAD_REQUEST, err);
   });
