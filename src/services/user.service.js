@@ -30,6 +30,7 @@ const createUser = async (userBody, account) => {
     user = new User({
       deviceId: userBody.deviceId,
       account: account.id,
+      email: null,
     });
   }
 
