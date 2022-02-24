@@ -6,7 +6,7 @@ require('../models/account.model');
 const { clothingService } = require('../services');
 
 const getClothes = catchAsync(async (req, res) => {
-  const result = await clothingService.queryClothes(req.params.closet);
+  const result = await clothingService.queryClothesByCloset(req.params.closet);
   res.send(result);
 });
 
@@ -23,6 +23,11 @@ const getGarment = catchAsync(async (req, res) => {
   res.send(garment);
 });
 
+const getGarmentSet = catchAsync(async (req, res) => {
+  const result = await clothingService.queryGarmentSetsByCloset(req.params.closet);
+  res.send(result);
+});
+
 const getComperableGarments = catchAsync(async (req, res) => {
   const garments = await clothingService.getComparableItemsByGarmentId(req.params.garmentId);
   res.send(garments);
@@ -30,7 +35,18 @@ const getComperableGarments = catchAsync(async (req, res) => {
 
 const createGarment = catchAsync(async (req, res) => {
   const closet = await Closet.findById(req.body.closetId);
+
+  if (closet == null) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Closet doesn't exist yet");
+  }
+
   const garment = await clothingService.createGarment(req, closet);
+  res.status(httpStatus.CREATED).send(garment);
+});
+
+const createGarmentSet = catchAsync(async (req, res) => {
+  const closet = await Closet.findById(req.body.closetId);
+  const garment = await clothingService.createGarmentSet(req, closet);
   res.status(httpStatus.CREATED).send(garment);
 });
 
@@ -48,8 +64,10 @@ module.exports = {
   getClothes,
   getAllClothes,
   getGarment,
+  getGarmentSet,
   getComperableGarments,
   createGarment,
   updateGarment,
   deleteGarment,
+  createGarmentSet,
 };

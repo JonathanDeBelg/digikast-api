@@ -10,7 +10,7 @@ const clothingTypes = {
   SHORTBOTTOMS: 'Korte broek',
   LONGBOTTOMS: 'Lange broek',
   DRESS: 'Jurkje',
-  SKIRT: 'Rokje'
+  SKIRT: 'Rokje',
 };
 
 const colourTypes = {
@@ -25,7 +25,7 @@ const colourTypes = {
   GREY: 'Grijs',
   ORANGE: 'Oranje',
   BEIGE: 'Beige',
-  BROWN: 'Bruin'
+  BROWN: 'Bruin',
 };
 
 const occasions = {
@@ -34,8 +34,14 @@ const occasions = {
   WORK: 'Werk',
 };
 
+const closetItemTypes = {
+  GARMENT: 'garment',
+  OUTFIT: 'outfit',
+};
+
 module.exports = {
   clothingTypes,
   colourTypes,
-  occasions
+  occasions,
+  closetItemTypes,
 };

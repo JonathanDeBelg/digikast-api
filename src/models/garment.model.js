@@ -39,6 +39,9 @@ const garmentSchema = mongoose.Schema(
   },
   {
     timestamps: true,
+  },
+  {
+    autoIndex: false,
   }
 );
 

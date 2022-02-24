@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const { clothingTypes, colourTypes, occasions } = require('../../config/clothes');
+const { clothingTypes, colourTypes, occasions, closetItemTypes } = require('../../config/clothes');
 const { toJSON } = require('../plugins');
 
-const clothesSchema = mongoose.Schema(
+const closetItemSchema = mongoose.Schema(
   {
     name: {
       type: String,
@@ -16,12 +16,17 @@ const clothesSchema = mongoose.Schema(
     colour: {
       type: String,
       enum: colourTypes,
-      required: true,
+      required: false,
     },
-    type: {
+    garmentType: {
       type: String,
       enum: clothingTypes,
-      required: true,
+      required: false,
+    },
+    closetItemType: {
+      type: String,
+      enum: closetItemTypes,
+      required: false,
     },
     occasion: {
       type: String,
@@ -44,11 +49,11 @@ const clothesSchema = mongoose.Schema(
 );
 
 // add plugin that converts mongoose to json
-clothesSchema.plugin(toJSON);
+closetItemSchema.plugin(toJSON);
 
 /**
- * @typedef Clothes
+ * @typedef ClosetItem
  */
-const Clothes = mongoose.model('Clothes', clothesSchema);
+const ClosetItem = mongoose.model('Closet-items', closetItemSchema);
 
-module.exports = Clothes;
+module.exports = ClosetItem;
