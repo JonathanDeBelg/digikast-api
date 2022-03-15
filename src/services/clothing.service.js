@@ -141,7 +141,6 @@ const getComparableItemsByGarmentId = async (garmentId) => {
   if (!garment) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Garment not found');
   }
-  console.log(garment);
   const comparableGarments = await getComparableItemsByGarment(garment);
   return comparableGarments;
 };

@@ -29,9 +29,8 @@ const getGarmentSet = catchAsync(async (req, res) => {
 });
 
 const getComperableGarments = catchAsync(async (req, res) => {
-  console.log(req.params);
-  // const garments = await clothingService.getComparableItemsByGarmentId(req.params.garment);
-  // res.send(garments);
+  const garments = await clothingService.getComparableItemsByGarmentId(req.params.garment);
+  res.send(garments);
 });
 
 const createGarment = catchAsync(async (req, res) => {

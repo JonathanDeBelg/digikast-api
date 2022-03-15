@@ -10,7 +10,7 @@ router.route('/:closet/').get(auth(), clothingController.getClothes);
 router.route('/:closet/set').get(auth(), clothingController.getGarmentSet);
 
 router
-  .route('/:closet/:garmentId')
+  .route('/:garmentId')
   .get(auth(), clothingController.getGarment)
   .put(auth(), clothingController.updateGarment)
   .delete(auth(), clothingController.deleteGarment);
