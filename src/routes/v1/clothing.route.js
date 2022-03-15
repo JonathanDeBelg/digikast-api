@@ -16,7 +16,7 @@ router
   .delete(auth(), clothingController.deleteGarment);
 
 router
-  .route('/:garmentId/comparableItems')
+  .route('/comparableItems/:garment')
   .get(auth(), clothingController.getComperableGarments);
 
 router
