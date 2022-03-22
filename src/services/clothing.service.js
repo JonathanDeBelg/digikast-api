@@ -88,7 +88,7 @@ const createGarment = async (req, closet, filePath) => {
   } else {
     closetItem = await ClosetItem.create({
       name: req.body.name,
-      path: req.body.filePath,
+      path: filePath.Location,
       closetItemType: req.body.closetItemType,
       occasion: req.body.occasion,
       favorite: req.body.favorite,
