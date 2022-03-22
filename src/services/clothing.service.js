@@ -72,12 +72,12 @@ const createGarmentSet = async (req, closet) => {
   return setId;
 };
 
-const createGarment = async (req, closet) => {
+const createGarment = async (req, closet, filePath) => {
   let closetItem;
   if (req.body.closetItemTyp === closetItemTypes.GARMENT) {
     closetItem = await ClosetItem.create({
       name: req.body.name,
-      path: req.body.filePath,
+      path: filePath,
       garmentType: req.body.garmentType,
       closetItemType: req.body.closetItemType,
       colour: req.body.colour,

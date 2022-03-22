@@ -4,6 +4,7 @@ const ApiError = require('../utils/ApiError');
 const Closet = require('../models/clothing/closet.model');
 require('../models/account.model');
 const { clothingService } = require('../services');
+const {uploadFile} = require("../utils/AWSFileUploader");
 
 const getClothes = catchAsync(async (req, res) => {
   const result = await clothingService.queryClothesByCloset(req.params.closet);
@@ -34,13 +35,14 @@ const getComperableGarments = catchAsync(async (req, res) => {
 });
 
 const createGarment = catchAsync(async (req, res) => {
+  const filePath = await uploadFile(req);
   const closet = await Closet.findById(req.body.closetId);
 
   if (closet == null) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Closet doesn't exist yet");
   }
 
-  const garment = await clothingService.createGarment(req, closet);
+  const garment = await clothingService.createGarment(req, closet, filePath);
   res.status(httpStatus.CREATED).send(garment);
 });
 
