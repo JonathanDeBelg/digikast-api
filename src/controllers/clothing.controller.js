@@ -37,7 +37,7 @@ const getComperableGarments = catchAsync(async (req, res) => {
 const createGarment = catchAsync(async (req, res) => {
   const filePath = await uploadFile(req.file, req);
   const closet = await Closet.findById(req.body.closetId);
-
+  console.log(filePath);
   if (closet == null) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Closet doesn't exist yet");
   }
