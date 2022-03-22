@@ -13,6 +13,8 @@ const uploadFile = async (file, req) => {
     Body: file,
   };
 
+  console.log(params);
+
   return s3
     .upload(params, function (s3Err, data) {
       if (s3Err) {
