@@ -10,7 +10,7 @@ const uploadFile = async (file, req) => {
   const params = {
     Bucket: process.env.S3_BUCKET_NAME,
     Key: `${req.user.id}/${req.file.originalname}`,
-    Body: file,
+    Body: file.buffer,
   };
 
   console.log(params);
