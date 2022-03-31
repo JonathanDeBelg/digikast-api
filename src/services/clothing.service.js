@@ -64,6 +64,7 @@ const createGarmentSet = async (req, closet) => {
       return GarmentSet.create({
         setId,
         closetItem: item,
+        name: req.body.name,
         closet,
       });
     })
