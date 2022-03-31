@@ -25,6 +25,7 @@ const getGarment = catchAsync(async (req, res) => {
 });
 
 const getGarmentSet = catchAsync(async (req, res) => {
+  console.log(req.params);
   const result = await clothingService.queryGarmentSetsByCloset(req.params.closet);
   res.send(result);
 });
