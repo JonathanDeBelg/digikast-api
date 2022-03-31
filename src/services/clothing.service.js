@@ -34,7 +34,7 @@ const queryGarmentSetsByCloset = async (closetId) => {
   garmentSets.slice(1).forEach((garmentSetItem) => {
     garmentSet.closetItems.push(garmentSetItem.closetItem);
   });
-
+  console.log(garmentSet);
   return garmentSet;
 };
 
