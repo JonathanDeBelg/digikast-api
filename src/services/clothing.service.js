@@ -25,8 +25,10 @@ const queryClothesByCloset = async (closetId) => {
  */
 const queryGarmentSetsByCloset = async (closetId) => {
   const garmentSet = await GarmentSet.find({
-    // closet: closetId,
+    closet: closetId,
   });
+
+  console.log(garmentSet);
   return garmentSet;
 };
 
