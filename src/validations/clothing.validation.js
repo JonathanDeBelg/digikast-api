@@ -16,7 +16,7 @@ const createGarmentSet = {
   body: Joi.object().keys({
     name: Joi.string().optional().allow(''),
     closetId: Joi.string().required(),
-    items: Joi.array().required(),
+    items: Joi.any().required(),
     occasion: Joi.string().required(),
     favorite: Joi.bool().required(),
   }),
