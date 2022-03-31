@@ -7,6 +7,10 @@ const closetItemSchema = mongoose.Schema(
       type: mongoose.SchemaTypes.ObjectId,
       required: true,
     },
+    name: {
+      type: String,
+      trim: true,
+    },
     closetItem: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'Closet-items',
