@@ -59,10 +59,8 @@ const getGarmentSetById = async (id) => {
 
 const createGarmentSet = async (req, closet) => {
   const setId = new mongoose.Types.ObjectId();
-  console.log(Array.isArray(JSON.parse(req.body.items)));
-  console.log(JSON.parse(req.body.items));
   await Promise.all(
-    req.body.items.map((item) => {
+    JSON.parse(req.body.items).map((item) => {
       return GarmentSet.create({
         setId,
         closetItem: item,
