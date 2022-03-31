@@ -4,7 +4,7 @@ const ApiError = require('../utils/ApiError');
 const Closet = require('../models/clothing/closet.model');
 require('../models/account.model');
 const { clothingService } = require('../services');
-const {uploadFile} = require("../utils/AWSFileUploader");
+const { uploadFile } = require("../utils/AWSFileUploader");
 
 const getClothes = catchAsync(async (req, res) => {
   const result = await clothingService.queryClothesByCloset(req.params.closet);
