@@ -17,6 +17,8 @@ const createGarmentSet = {
     name: Joi.string().optional().allow(''),
     closetId: Joi.string().required(),
     items: Joi.array().required(),
+    occasion: Joi.string().required(),
+    favorite: Joi.bool().required(),
   }),
 };
 
