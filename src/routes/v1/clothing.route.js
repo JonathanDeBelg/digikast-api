@@ -8,7 +8,7 @@ const clothingValidation = require('../../validations/clothing.validation');
 const router = express.Router();
 const upload = multer();
 
-router.route('/:closet/').get(auth(), clothingController.getClothes);
+router.route('/closet/:closet/').get(auth(), clothingController.getClothes);
 router.route('/set/:closet').get(auth(), clothingController.getGarmentSet);
 
 router

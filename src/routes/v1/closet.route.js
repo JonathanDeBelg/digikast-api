@@ -3,7 +3,6 @@ const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
 const closetController = require('../../controllers/closet.controller');
 const closetValidation = require('../../validations/closet.validation');
-const clothingController = require("../../controllers/clothing.controller");
 
 const router = express.Router();
 
