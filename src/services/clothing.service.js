@@ -24,11 +24,17 @@ const queryClothesByCloset = async (closetId) => {
  * @param closetId
  */
 const queryGarmentSetsByCloset = async (closetId) => {
-  const garmentSet = await GarmentSet.find({
+  const garmentSets = await GarmentSet.find({
     closet: closetId,
   });
 
-  console.log(garmentSet);
+  const garmentSet = garmentSets[0];
+  garmentSet.closetItems = [garmentSet.closetItem];
+
+  garmentSets.slice(1).forEach((garmentSetItem) => {
+    garmentSet.closetItems.push(garmentSetItem.closetItem);
+  });
+
   return garmentSet;
 };
 
