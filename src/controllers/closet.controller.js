@@ -2,11 +2,24 @@ const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const ApiError = require('../utils/ApiError');
 const Account = require('../models/account.model');
-const { closetService } = require('../services');
+const { closetService, clothingService } = require('../services');
 
 const getClosets = catchAsync(async (req, res) => {
   const accountId = await Account.findById(req.user.account);
-  const result = await closetService.queryClosets(accountId);
+  const closets = await closetService.queryClosets(accountId);
+  const result = {};
+
+  for (const key in closets) {
+    const garments = await clothingService.queryLastAddedNoClothes(closets[key].id, 3);
+    result[closets[key].id] = {
+      id: closets[key].id,
+      name: closets[key].name,
+      account: closets[key].account,
+      type: closets[key].type,
+      preview: garments,
+    };
+  }
+
   res.send(result);
 });
 

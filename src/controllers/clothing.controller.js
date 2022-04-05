@@ -4,7 +4,8 @@ const ApiError = require('../utils/ApiError');
 const Closet = require('../models/clothing/closet.model');
 require('../models/account.model');
 const { clothingService } = require('../services');
-const { uploadFile } = require("../utils/AWSFileUploader");
+const { uploadFile } = require('../utils/AWSFileUploader');
+const { processBackgroundRemoval } = require('../utils/BackgroundRemover');
 
 const getClothes = catchAsync(async (req, res) => {
   const result = await clothingService.queryClothesByCloset(req.params.closet);
@@ -24,8 +25,13 @@ const getGarment = catchAsync(async (req, res) => {
   res.send(garment);
 });
 
-const getGarmentSet = catchAsync(async (req, res) => {
+const getGarmentSetsByClosetId = catchAsync(async (req, res) => {
   const result = await clothingService.queryGarmentSetsByCloset(req.params.closet);
+  res.send(result);
+});
+
+const getAllGarmentSets = catchAsync(async (req, res) => {
+  const result = await clothingService.queryGarmentSets();
   res.send(result);
 });
 
@@ -35,7 +41,13 @@ const getComperableGarments = catchAsync(async (req, res) => {
 });
 
 const createGarment = catchAsync(async (req, res) => {
-  const filePath = await uploadFile(req.file, req);
+  let filePath = '';
+  if (req.body.closetItemType === 'garment') {
+    const removedBackground = await processBackgroundRemoval(req.file);
+    filePath = await uploadFile(removedBackground, req, 'png');
+  } else {
+    filePath = await uploadFile(req.file.buffer, req, 'jpeg');
+  }
   const closet = await Closet.findById(req.body.closetId);
   if (closet == null) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Closet doesn't exist yet");
@@ -64,10 +76,11 @@ module.exports = {
   getClothes,
   getAllClothes,
   getGarment,
-  getGarmentSet,
+  getGarmentSetsByClosetId,
   getComperableGarments,
   createGarment,
   updateGarment,
   deleteGarment,
   createGarmentSet,
+  getAllGarmentSets,
 };

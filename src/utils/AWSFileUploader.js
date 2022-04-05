@@ -6,11 +6,14 @@ const s3 = new AWS.S3({
   region: process.env.S3_BUCKET_REGION,
 });
 
-const uploadFile = async (file, req) => {
+const uploadFile = async (file, req, ext) => {
+  const buf = Buffer.from(file, 'base64');
   const params = {
     Bucket: process.env.S3_BUCKET_NAME,
-    Key: `${req.user.id}/${req.file.originalname}`,
-    Body: file.buffer,
+    Key: `${req.user.id}/${req.file.originalname}.${ext}`,
+    Body: buf,
+    ContentEncoding: 'base64',
+    ContentType: `image/${ext}`,
   };
 
   return s3

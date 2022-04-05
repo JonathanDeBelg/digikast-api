@@ -8,11 +8,15 @@ const clothingValidation = require('../../validations/clothing.validation');
 const router = express.Router();
 const upload = multer();
 
-router.route('/:closet/').get(auth(), clothingController.getClothes);
-router.route('/set/:closet').get(auth(), clothingController.getGarmentSet);
+router.route('/closet/:closet/').get(auth(), clothingController.getClothes);
+router.route('/set/:closet').get(auth(), clothingController.getGarmentSetsByClosetId);
+router
+  .route('/set/')
+  .get(auth(), clothingController.getAllGarmentSets)
+  .post([auth(), validate(clothingValidation.createGarmentSet)], clothingController.createGarmentSet);
 
 router
-  .route('/:garmentId')
+  .route('/:closet/:garmentId')
   .get(auth(), clothingController.getGarment)
   .put(auth(), clothingController.updateGarment)
   .delete(auth(), clothingController.deleteGarment);
@@ -27,10 +31,6 @@ router
   .post(upload.single('image'), [auth(), validate(clothingValidation.create)], function(req, res, next) {
     return clothingController.createGarment(req, res, next);
   });
-
-router
-  .route('/set')
-  .post([auth(), validate(clothingValidation.createGarmentSet)], clothingController.createGarmentSet);
 
 module.exports = router;
 

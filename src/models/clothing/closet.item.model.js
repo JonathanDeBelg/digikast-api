@@ -54,6 +54,6 @@ closetItemSchema.plugin(toJSON);
 /**
  * @typedef ClosetItem
  */
-const ClosetItem = mongoose.model('Closet_items', closetItemSchema);
+const ClosetItem = mongoose.model('closet_items', closetItemSchema);
 
 module.exports = ClosetItem;

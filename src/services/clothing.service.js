@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const ApiError = require('../utils/ApiError');
 const { ClosetItem, GarmentSet } = require('../models');
 const { removeFile } = require('../utils/AWSFileUploader');
-const {clothingTypes, closetItemTypes} = require("../config/clothes");
+const { closetItemTypes } = require("../config/clothes");
 
 /**
  * Query for clothes
@@ -24,11 +24,51 @@ const queryClothesByCloset = async (closetId) => {
  * @param closetId
  */
 const queryGarmentSetsByCloset = async (closetId) => {
-  const garmentSets = await GarmentSet.find({
-    closet: closetId,
-  });
+  const setIds = await GarmentSet.distinct('setId');
+  const garmentItems = [];
 
-  return garmentSets;
+  for (const setId of setIds) {
+    const garmentSets = await GarmentSet.find({
+      closet: closetId,
+      setId,
+    }).populate('closetItem');
+
+    garmentItems.push({
+      setId,
+      name: garmentSets[1].name,
+      closet: garmentSets[1].closet,
+      items: garmentSets.map((element) => element.closetItem),
+    });
+  }
+
+  return garmentItems;
+};
+
+/**
+ * Query for all garment-sets
+ * @returns {Promise<QueryResult>}
+ * @param closetId
+ */
+const queryGarmentSets = async () => {
+  const setIds = await GarmentSet.distinct('setId');
+  const garmentItems = [];
+
+  console.log(setIds);
+
+  for (const setId of setIds) {
+    const garmentSets = await GarmentSet.find({
+      setId,
+    }).populate('closetItem');
+
+    garmentItems.push({
+      setId,
+      name: garmentSets[1].name,
+      closet: garmentSets[1].closet,
+      items: garmentSets.map((element) => element.closetItem),
+    });
+  }
+
+  return garmentItems;
 };
 
 /**
@@ -76,7 +116,7 @@ const createGarmentSet = async (req, closet) => {
 
 const createGarment = async (req, closet, filePath) => {
   let closetItem;
-  if (req.body.closetItemTyp === closetItemTypes.GARMENT) {
+  if (req.body.closetItemType === closetItemTypes.GARMENT) {
     closetItem = await ClosetItem.create({
       name: req.body.name,
       path: filePath.Location,
@@ -135,7 +175,10 @@ const changeCloset = async (closet, garmentId) => {
 };
 
 const getComparableItemsByGarment = async (garment) => {
-  return ClosetItem.find({ type: garment.type });
+  return ClosetItem.find({
+    closetItemType: 'garment',
+    _id: { $nin: [garment.id] },
+  });
 };
 
 const getComparableItemsByGarmentId = async (garmentId) => {
@@ -145,6 +188,13 @@ const getComparableItemsByGarmentId = async (garmentId) => {
   }
   const comparableGarments = await getComparableItemsByGarment(garment);
   return comparableGarments;
+};
+
+const queryLastAddedNoClothes = async (closet, limit) => {
+  return ClosetItem.find({
+    closet,
+    closetItemType: 'garment',
+  }).limit(limit);
 };
 
 module.exports = {
@@ -158,4 +208,6 @@ module.exports = {
   changeCloset,
   getComparableItemsByGarmentId,
   createGarmentSet,
+  queryLastAddedNoClothes,
+  queryGarmentSets,
 };

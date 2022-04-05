@@ -13,7 +13,7 @@ const closetItemSchema = mongoose.Schema(
     },
     closetItem: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'Closet-items',
+      ref: 'closet_items',
       required: true,
     },
     closet: {
@@ -33,6 +33,6 @@ closetItemSchema.plugin(toJSON);
 /**
  * @typedef GarmentSet
  */
-const GarmentSet = mongoose.model('Garment-set', closetItemSchema);
+const GarmentSet = mongoose.model('garment_sets', closetItemSchema);
 
 module.exports = GarmentSet;
