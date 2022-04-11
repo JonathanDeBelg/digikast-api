@@ -49,7 +49,7 @@ async function downloadImage(upload) {
   try {
     const bodyFormData = new FormData();
     bodyFormData.append('uuid', upload.uuid);
-    print("getting image");
+    console.log("getting image");
     const response = await instance.post(`https://api.backgroundremover.app${resultsUrl}`, bodyFormData, {
       headers: bodyFormData.getHeaders(),
     });
