@@ -9,7 +9,6 @@ const { processBackgroundRemoval } = require('../utils/BackgroundRemover');
 
 const getClothes = catchAsync(async (req, res) => {
   const result = await clothingService.queryClothesByCloset(req.params.closet);
-  console.log(result);
   res.send(result);
 });
 
