@@ -22,7 +22,7 @@ router
   .delete(auth(), clothingController.deleteGarment);
 
 router
-  .route('/comparableItems/:garment')
+  .route('/:closet/:garment/comparableItems')
   .get(auth(), clothingController.getComperableGarments);
 
 router
