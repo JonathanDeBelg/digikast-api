@@ -6,7 +6,7 @@ const removeBackground = async (req) => {
   const bodyFormData = new FormData();
   bodyFormData.append('image', req.buffer, req.originalname);
   bodyFormData.append('mode', 'image');
-  bodyFormData.append('background_color', '#FFFFFF');
+  bodyFormData.append('background_color', '#EEEEEEFF');
   bodyFormData.append('format', 'jpg');
   bodyFormData.append('background_fit_to_result', 'true');
 
