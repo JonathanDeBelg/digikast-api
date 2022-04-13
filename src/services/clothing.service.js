@@ -24,12 +24,13 @@ const queryClothesByCloset = async (closetId) => {
  * @param closetId
  */
 const queryGarmentSetsByCloset = async (closetId) => {
-  const setIds = await GarmentSet.distinct('setId');
-  const garmentItems = [];
+  const setIds = await GarmentSet.find({
+    closet: closetId,
+  }).populate('closetItem').distinct('setId');
 
+  const garmentItems = [];
   for (const setId of setIds) {
     const garmentSets = await GarmentSet.find({
-      closet: closetId,
       setId,
     }).populate('closetItem');
 

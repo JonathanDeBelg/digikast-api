@@ -6,6 +6,7 @@ require('../models/account.model');
 const { clothingService } = require('../services');
 const { uploadFile } = require('../utils/AWSFileUploader');
 const { processBackgroundRemoval } = require('../utils/BackgroundRemover');
+const {removeBackground} = require("../utils/BackgroundRemoverPhotoScissors");
 
 const getClothes = catchAsync(async (req, res) => {
   const result = await clothingService.queryClothesByCloset(req.params.closet);
@@ -43,10 +44,10 @@ const getComperableGarments = catchAsync(async (req, res) => {
 const createGarment = catchAsync(async (req, res) => {
   let filePath = '';
   if (req.body.closetItemType === 'garment') {
-    const removedBackground = await processBackgroundRemoval(req.file);
-    filePath = await uploadFile(removedBackground, req, 'png');
+    const removedBackground = await removeBackground(req.file);
+    filePath = await uploadFile(removedBackground, req);
   } else {
-    filePath = await uploadFile(req.file.buffer, req, 'jpeg');
+    filePath = await uploadFile(req.file.buffer, req);
   }
   const closet = await Closet.findById(req.body.closetId);
   if (closet == null) {
@@ -72,6 +73,11 @@ const deleteGarment = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send('Succesfull deletion');
 });
 
+const changeGarmentCloset = catchAsync(async (req, res) => {
+  await clothingService.changeCloset(req.body.closet, req.params.garmentId);
+  res.status(httpStatus.OK).send('Successfully changed closet');
+});
+
 module.exports = {
   getClothes,
   getAllClothes,
@@ -83,4 +89,5 @@ module.exports = {
   deleteGarment,
   createGarmentSet,
   getAllGarmentSets,
+  changeGarmentCloset,
 };

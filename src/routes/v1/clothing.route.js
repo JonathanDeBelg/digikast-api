@@ -22,6 +22,10 @@ router
   .delete(auth(), clothingController.deleteGarment);
 
 router
+  .route('/:closet/:garmentId/changeCloset')
+  .post(auth(), clothingController.changeGarmentCloset)
+
+router
   .route('/:closet/:garment/comparableItems')
   .get(auth(), clothingController.getComperableGarments);
 
