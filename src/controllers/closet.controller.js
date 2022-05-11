@@ -19,7 +19,7 @@ const getClosets = catchAsync(async (req, res) => {
       preview: garments,
     };
   }
-  console.log(result);
+
   res.send(result);
 });
 

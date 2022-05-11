@@ -50,15 +50,14 @@ const queryGarmentSetsByCloset = async (closetId) => {
  * @returns {Promise<QueryResult>}
  * @param closetId
  */
-const queryGarmentSets = async () => {
+const queryGarmentSets = async (accountId) => {
   const setIds = await GarmentSet.distinct('setId');
   const garmentItems = [];
-
-  console.log(setIds);
 
   for (const setId of setIds) {
     const garmentSets = await GarmentSet.find({
       setId,
+      account: accountId,
     }).populate('closetItem');
 
     garmentItems.push({
@@ -76,8 +75,10 @@ const queryGarmentSets = async () => {
  * Query for all clothes
  * @returns {Promise<QueryResult>}
  */
-const queryAllClothes = async () => {
-  const clothes = await ClosetItem.find({});
+const queryAllClothes = async (accountId) => {
+  const clothes = await ClosetItem.find({
+    account: accountId,
+  });
   return clothes;
 };
 
@@ -175,19 +176,20 @@ const changeCloset = async (closet, garmentId) => {
   return garment;
 };
 
-const getComparableItemsByGarment = async (garment) => {
+const getComparableItemsByGarment = async (accountId, garment) => {
   return ClosetItem.find({
     closetItemType: 'garment',
+    account: accountId,
     _id: { $nin: [garment.id] },
   });
 };
 
-const getComparableItemsByGarmentId = async (garmentId) => {
+const getComparableItemsByGarmentId = async (accountId, garmentId) => {
   const garment = await getGarmentById(garmentId);
   if (!garment) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Garment not found');
   }
-  const comparableGarments = await getComparableItemsByGarment(garment);
+  const comparableGarments = await getComparableItemsByGarment(accountId, garment);
   return comparableGarments;
 };
 

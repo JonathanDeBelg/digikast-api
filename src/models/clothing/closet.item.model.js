@@ -31,7 +31,7 @@ const closetItemSchema = mongoose.Schema(
     occasion: {
       type: String,
       enum: occasions,
-      required: true,
+      required: false,
     },
     favorite: {
       type: Boolean,
