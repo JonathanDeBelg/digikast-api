@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const ApiError = require('../utils/ApiError');
 const { ClosetItem, GarmentSet } = require('../models');
 const { removeFile } = require('../utils/AWSFileUploader');
-const { closetItemTypes } = require("../config/clothes");
+const { closetItemTypes } = require('../config/clothes');
 
 /**
  * Query for clothes
@@ -12,10 +12,9 @@ const { closetItemTypes } = require("../config/clothes");
  * @param accountId
  * @param closetId
  */
-const queryClothesByCloset = async (accountId, closetId) => {
+const queryClothesByCloset = async (closetId) => {
   const clothes = await ClosetItem.find({
     closet: closetId,
-    account: accountId,
   });
   return clothes;
 };
@@ -23,6 +22,7 @@ const queryClothesByCloset = async (accountId, closetId) => {
 /**
  * Query for garment-sets
  * @returns {Promise<QueryResult>}
+ * @param accountId
  * @param closetId
  */
 const queryGarmentSetsByCloset = async (accountId, closetId) => {
@@ -105,7 +105,7 @@ const getGarmentSetById = async (id) => {
   return GarmentSet.findById(id);
 };
 
-const createGarmentSet = async (req, closet) => {
+const createGarmentSet = async (req, closet, account) => {
   const setId = new mongoose.Types.ObjectId();
   await Promise.all(
     JSON.parse(req.body.items).map((item) => {
@@ -114,6 +114,7 @@ const createGarmentSet = async (req, closet) => {
         closetItem: item,
         name: req.body.name,
         closet,
+        account,
       });
     })
   );
@@ -121,7 +122,7 @@ const createGarmentSet = async (req, closet) => {
   return setId;
 };
 
-const createGarment = async (req, closet, filePath) => {
+const createGarment = async (req, closet, account, filePath) => {
   let closetItem;
   if (req.body.closetItemType === closetItemTypes.GARMENT) {
     closetItem = await ClosetItem.create({
@@ -133,6 +134,7 @@ const createGarment = async (req, closet, filePath) => {
       occasion: req.body.occasion,
       favorite: req.body.favorite,
       closet,
+      account
     });
   } else {
     closetItem = await ClosetItem.create({

@@ -1,9 +1,9 @@
-const ApiError = require("../utils/ApiError");
-const httpStatus = require("http-status");
+const httpStatus = require('http-status');
+const ApiError = require('../utils/ApiError');
 const { Closet } = require('../models');
 
 const clothesService = require('./clothing.service');
-const { numberOfClosets } = require("../config/account");
+const { numberOfClosets } = require('../config/account');
 
 /**
  * Query for closets
@@ -27,9 +27,9 @@ const getClosetById = async (id) => {
 };
 
 const numberofClosestBelowMax = async (account, type) => {
-  var configVar = type ? numberOfClosets.CLOSET : numberOfClosets.SUITCASE;
+  const configVar = type ? numberOfClosets.CLOSET : numberOfClosets.SUITCASE;
 
-  return Closet.where({account: account, type: type}).countDocuments(function (err, count) {
+  return Closet.where({ account, type }).countDocuments(function (err, count) {
     if (err) return handleError(err);
     return count <= configVar;
   });
@@ -48,7 +48,7 @@ const createCloset = async (closetBody, account) => {
   const closet = await Closet.create({
     name: closetBody.name,
     account,
-    type: closetBody.type
+    type: closetBody.type,
   });
   return closet;
 };
@@ -73,7 +73,7 @@ const addClothesById = async (closetId, updateRequest) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Closet not found');
   }
 
-  updateRequest.forEach(element => clothesService.changeCloset(closet, element));
+  updateRequest.forEach((element) => clothesService.changeCloset(closet, element));
 
   Object.assign(closet, updateRequest);
   await closet.save();

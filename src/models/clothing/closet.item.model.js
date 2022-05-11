@@ -42,6 +42,11 @@ const closetItemSchema = mongoose.Schema(
       ref: 'Closet',
       required: true,
     },
+    account: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'Account',
+      required: true,
+    },
   },
   {
     timestamps: true,

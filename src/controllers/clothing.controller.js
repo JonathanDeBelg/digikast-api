@@ -9,8 +9,7 @@ const { removeBackground } = require('../utils/BackgroundRemoverPhotoScissors');
 const Account = require('../models/account.model');
 
 const getClothes = catchAsync(async (req, res) => {
-  const accountId = await Account.findById(req.user.account);
-  const result = await clothingService.queryClothesByCloset(accountId, req.params.closet);
+  const result = await clothingService.queryClothesByCloset(req.params.closet);
   res.send(result);
 });
 
@@ -55,16 +54,20 @@ const createGarment = catchAsync(async (req, res) => {
     filePath = await uploadFile(req.file.buffer, req);
   }
   const closet = await Closet.findById(req.body.closetId);
+  const account = await Account.findById(req.user.account);
+
   if (closet == null) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Closet doesn't exist yet");
   }
-  const garment = await clothingService.createGarment(req, closet, filePath);
+  const garment = await clothingService.createGarment(req, closet, account, filePath);
   res.status(httpStatus.CREATED).send(garment);
 });
 
 const createGarmentSet = catchAsync(async (req, res) => {
   const closet = await Closet.findById(req.body.closetId);
-  const garment = await clothingService.createGarmentSet(req, closet);
+  const account = await Account.findById(req.user.account);
+
+  const garment = await clothingService.createGarmentSet(req, closet, account);
   res.status(httpStatus.CREATED).send(garment);
 });
 
