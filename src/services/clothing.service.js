@@ -9,11 +9,13 @@ const { closetItemTypes } = require("../config/clothes");
 /**
  * Query for clothes
  * @returns {Promise<QueryResult>}
+ * @param accountId
  * @param closetId
  */
-const queryClothesByCloset = async (closetId) => {
+const queryClothesByCloset = async (accountId, closetId) => {
   const clothes = await ClosetItem.find({
     closet: closetId,
+    account: accountId,
   });
   return clothes;
 };
@@ -23,10 +25,13 @@ const queryClothesByCloset = async (closetId) => {
  * @returns {Promise<QueryResult>}
  * @param closetId
  */
-const queryGarmentSetsByCloset = async (closetId) => {
+const queryGarmentSetsByCloset = async (accountId, closetId) => {
   const setIds = await GarmentSet.find({
     closet: closetId,
-  }).populate('closetItem').distinct('setId');
+    account: accountId,
+  })
+    .populate('closetItem')
+    .distinct('setId');
 
   const garmentItems = [];
   for (const setId of setIds) {

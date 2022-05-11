@@ -5,17 +5,18 @@ const Closet = require('../models/clothing/closet.model');
 require('../models/account.model');
 const { clothingService } = require('../services');
 const { uploadFile } = require('../utils/AWSFileUploader');
-const { processBackgroundRemoval } = require('../utils/BackgroundRemover');
-const {removeBackground} = require("../utils/BackgroundRemoverPhotoScissors");
-const Account = require("../models/account.model");
+const { removeBackground } = require('../utils/BackgroundRemoverPhotoScissors');
+const Account = require('../models/account.model');
 
 const getClothes = catchAsync(async (req, res) => {
-  const result = await clothingService.queryClothesByCloset(req.params.closet);
+  const accountId = await Account.findById(req.user.account);
+  const result = await clothingService.queryClothesByCloset(accountId, req.params.closet);
   res.send(result);
 });
 
 const getAllClothes = catchAsync(async (req, res) => {
-  const result = await clothingService.queryAllClothes();
+  const accountId = await Account.findById(req.user.account);
+  const result = await clothingService.queryAllClothes(accountId);
   res.send(result);
 });
 
@@ -28,7 +29,8 @@ const getGarment = catchAsync(async (req, res) => {
 });
 
 const getGarmentSetsByClosetId = catchAsync(async (req, res) => {
-  const result = await clothingService.queryGarmentSetsByCloset(req.params.closet);
+  const accountId = await Account.findById(req.user.account);
+  const result = await clothingService.queryGarmentSetsByCloset(accountId, req.params.closet);
   res.send(result);
 });
 
