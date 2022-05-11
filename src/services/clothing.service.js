@@ -80,10 +80,11 @@ const queryGarmentSets = async (accountId) => {
  * Query for all clothes
  * @returns {Promise<QueryResult>}
  */
-const queryAllClothes = async (accountId) => {
+const queryAllClothes = async (account) => {
   const clothes = await ClosetItem.find({
-    account: accountId,
+    account,
   });
+  console.log(clothes);
   return clothes;
 };
 
