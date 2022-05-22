@@ -36,7 +36,7 @@ const numberofClosestBelowMax = async (account, type) => {
 };
 
 const createCloset = async (closetBody, account) => {
-  if (await Closet.isNameDuplicate(closetBody.name)) {
+  if (await Closet.isNameDuplicate(closetBody.name, account)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Name is duplicate');
   }
 

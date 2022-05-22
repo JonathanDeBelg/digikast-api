@@ -28,12 +28,12 @@ closetSchema.plugin(toJSON);
 /**
  * Check if name is duplicate
  * @param {string} name - The closets's name
+ * @param account
  * @param {ObjectId} [excludeClosetId] - The id of the closet to be excluded
  * @returns {Promise<boolean>}
  */
-closetSchema.statics.isNameDuplicate = async function (name, excludeClosetId) {
-  console.log(excludeClosetId);
-  const closet = await this.findOne({ name, _id: { $ne: excludeClosetId } });
+closetSchema.statics.isNameDuplicate = async function (name, account, excludeClosetId) {
+  const closet = await this.findOne({ name, account, _id: { $ne: excludeClosetId } });
   return !!closet;
 };
 
