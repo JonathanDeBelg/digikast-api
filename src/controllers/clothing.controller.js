@@ -21,7 +21,6 @@ const getAllClothes = catchAsync(async (req, res) => {
 
 const getGarment = catchAsync(async (req, res) => {
   const garment = await clothingService.getGarmentById(req.params.garmentId);
-  console.log(garment);
   if (!garment) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Garment not found');
   }
