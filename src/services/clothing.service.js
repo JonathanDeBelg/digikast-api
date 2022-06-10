@@ -156,6 +156,8 @@ const updateGarmentById = async (garmentId, updateRequest) => {
   if (!garment) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Garment not found');
   }
+  console.log(garment);
+  console.log(updateRequest);
   Object.assign(garment, updateRequest);
   await garment.save();
   return garment;
