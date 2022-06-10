@@ -156,10 +156,6 @@ const updateGarmentById = async (garmentId, updateRequest) => {
   if (!garment) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Garment not found');
   }
-
-  if (await ClosetItem.isNameDuplicate(updateRequest.name, garment.id)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Name is duplicate');
-  }
   Object.assign(garment, updateRequest);
   await garment.save();
   return garment;
