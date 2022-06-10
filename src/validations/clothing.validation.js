@@ -4,7 +4,7 @@ const create = {
   body: Joi.object().keys({
     name: Joi.string().optional().allow(''),
     closetId: Joi.string().required(),
-    occasion: Joi.string().required(),
+    occasion: Joi.string().optional(),
     favorite: Joi.bool().required(),
     closetItemType: Joi.string().required(),
     garmentType: Joi.string().optional(),
