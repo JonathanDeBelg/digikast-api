@@ -3,10 +3,17 @@ const validate = require('../../middlewares/validate');
 const authValidation = require('../../validations/auth.validation');
 const authController = require('../../controllers/auth.controller');
 const auth = require('../../middlewares/auth');
+const multer = require("multer");
 
 const router = express.Router();
+const upload = multer();
 
-router.post('/register', validate(authValidation.register), authController.register);
+router
+  .route('/register')
+  .post(upload.single('image'), [auth(), validate(authValidation.register)], function (req, res, next) {
+    return authController.register(req, res, next);
+  });
+
 router.post('/login', validate(authValidation.login), authController.login);
 router.post('/logout', validate(authValidation.logout), authController.logout);
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { accountTypes } = require('../config/account');
-const { toJSON  } = require('./plugins');
+const { toJSON } = require('./plugins');
 
 const accountSchema = mongoose.Schema(
   {

@@ -1,18 +1,22 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService, accountService } = require('../services');
+const { uploadFile } = require('../utils/AWSFileUploader');
 
 const register = catchAsync(async (req, res) => {
+  const filePath = await uploadFile(req.file.buffer, req);
   const user = await userService.getUserByDeviceId(req.body.deviceId);
 
   await userService.updateUserById(user.id, {
     email: req.body.email,
     password: req.body.password,
     name: req.body.name,
+    profilePicture: filePath.Location,
   });
 
   const tokens = await tokenService.generateAuthTokens(user);
-  res.status(httpStatus.CREATED).send({ user, tokens });
+  const newUser = await userService.getUserByEmail(req.body.email);
+  res.status(httpStatus.CREATED).send({ user: newUser, tokens });
 });
 
 const login = catchAsync(async (req, res) => {

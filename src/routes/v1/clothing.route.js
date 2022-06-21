@@ -32,7 +32,7 @@ router
 router
   .route('/')
   .get(auth(), clothingController.getAllClothes)
-  .post(upload.single('image'), [auth(), validate(clothingValidation.create)], function(req, res, next) {
+  .post(upload.single('image'), [auth(), validate(clothingValidation.create)], function (req, res, next) {
     return clothingController.createGarment(req, res, next);
   });
 
