@@ -4,6 +4,7 @@ const { Closet } = require('../models');
 
 const clothesService = require('./clothing.service');
 const { numberOfClosets } = require('../config/account');
+const {json} = require("express");
 
 /**
  * Query for closets
@@ -73,7 +74,7 @@ const addClothesById = async (closetId, updateRequest) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Closet not found');
   }
 
-  updateRequest.forEach((element) => clothesService.changeCloset(closet, element));
+  JSON.parse(updateRequest.closetItems).forEach((element) => clothesService.changeCloset(closet, element));
 
   Object.assign(closet, updateRequest);
   await closet.save();
