@@ -1,10 +1,9 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
-const { Closet } = require('../models');
+const { Closet, ClosetItem} = require('../models');
 
 const clothesService = require('./clothing.service');
 const { numberOfClosets } = require('../config/account');
-const {json} = require("express");
 
 /**
  * Query for closets
@@ -68,12 +67,7 @@ const updateClosetById = async (closetId, updateRequest) => {
   return closet;
 };
 
-const addClothesById = async (closetId, updateRequest) => {
-  const closet = await getClosetById(closetId);
-  if (!closet) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Closet not found');
-  }
-
+const addClothesById = async (closet, updateRequest) => {
   JSON.parse(updateRequest.closetItems).forEach((element) => clothesService.changeCloset(closet, element));
 
   Object.assign(closet, updateRequest);
@@ -81,14 +75,23 @@ const addClothesById = async (closetId, updateRequest) => {
   return closet;
 };
 
-const deleteClosetById = async (closetId) => {
-  const closet = await getClosetById(closetId);
-  if (!closet) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Closet not found');
-  }
+const copyClothesById = async (closet, updateRequest) => {
+  JSON.parse(updateRequest.closetItems).forEach((element) => clothesService.copyClosetItem(closet, element));
+  return closet;
+};
+
+const deleteClosetById = async (closet) => {
+  await closet.remove();
+};
+
+const deleteSuitcaseById = async (closet) => {
+  await ClosetItem.find({
+    closet: closet._id,
+  })
+    .remove()
+    .exec();
 
   await closet.remove();
-  return closet;
 };
 
 module.exports = {
@@ -97,5 +100,7 @@ module.exports = {
   createCloset,
   updateClosetById,
   addClothesById,
-  deleteClosetById,
+  copyClothesById,
+  deleteCloset: deleteClosetById,
+  deleteSuitcase: deleteSuitcaseById
 };

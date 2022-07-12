@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 require('aws-sdk');
 const mongoose = require('mongoose');
+const { func } = require('joi');
 const ApiError = require('../utils/ApiError');
 const { ClosetItem, GarmentSet } = require('../models');
 const { removeFile } = require('../utils/AWSFileUploader');
@@ -17,6 +18,21 @@ const queryClothesByCloset = async (closetId) => {
     closet: closetId,
   });
   return clothes;
+};
+
+/**
+ * copy closetItem
+ * @returns {Promise<QueryResult>}
+ * @param closetItemId
+ */
+const copyClosetItem = async (closet, closetItemId) => {
+  await ClosetItem.findById(closetItemId).exec(function (error, doc) {
+    const copiedItem = new ClosetItem(doc);
+    copiedItem._id = mongoose.Types.ObjectId();
+    copiedItem.closet = closet.id;
+    copiedItem.isNew = true;
+    copiedItem.save();
+  });
 };
 
 /**
@@ -135,7 +151,7 @@ const createGarment = async (req, closet, account, filePath) => {
       occasion: req.body.occasion,
       favorite: req.body.favorite,
       closet,
-      account
+      account,
     });
   } else {
     closetItem = await ClosetItem.create({
@@ -217,4 +233,5 @@ module.exports = {
   createGarmentSet,
   queryLastAddedNoClothes,
   queryGarmentSets,
+  copyClosetItem,
 };

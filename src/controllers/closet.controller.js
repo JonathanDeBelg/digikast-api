@@ -43,12 +43,35 @@ const updateCloset = catchAsync(async (req, res) => {
 });
 
 const addClothesToCloset = catchAsync(async (req, res) => {
-  const closet = await closetService.addClothesById(req.params.closetId, req.body);
+  const closet = await closetService.getClosetById(req.params.closetId);
+  if (!closet) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Closet not found');
+  }
+
+  if (closet.type === true) {
+    await closetService.addClothesById(closet, req.body);
+  } else {
+    await closetService.copyClothesById(closet, req.body);
+  }
+  res.status(httpStatus.OK).send(closet);
+});
+
+const addClothesToSuitcase = catchAsync(async (req, res) => {
+  const closet = await closetService.copyClothesById(req.params.closetId, req.body);
   res.status(httpStatus.OK).send(closet);
 });
 
 const deleteCloset = catchAsync(async (req, res) => {
-  const closet = await closetService.deleteClosetById(req.params.closetId);
+  const closet = await closetService.getClosetById(req.params.closetId);
+  if (!closet) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Closet not found');
+  }
+
+  if (closet.type !== true) {
+    await closetService.deleteSuitcase(closet);
+  } else {
+    await closetService.deleteCloset(closet);
+  }
   res.status(httpStatus.OK).send(closet);
 });
 
@@ -58,5 +81,6 @@ module.exports = {
   createCloset,
   updateCloset,
   addClothesToCloset,
+  addClothesToSuitcase,
   deleteCloset,
 };
