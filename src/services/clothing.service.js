@@ -161,6 +161,7 @@ const createGarment = async (req, closet, account, filePath) => {
       occasion: req.body.occasion,
       favorite: req.body.favorite,
       closet,
+      account,
     });
   }
 

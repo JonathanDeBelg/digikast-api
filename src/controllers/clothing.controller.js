@@ -55,7 +55,6 @@ const createGarment = catchAsync(async (req, res) => {
   }
   const closet = await Closet.findById(req.body.closetId);
   const account = await Account.findById(req.user.account);
-  console.log(account);
 
   if (closet == null) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Closet doesn't exist yet");
