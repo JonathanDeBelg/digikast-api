@@ -54,6 +54,7 @@ const createGarment = catchAsync(async (req, res) => {
     filePath = await uploadFile(req.file.buffer, req);
   }
   const closet = await Closet.findById(req.body.closetId);
+  console.log(req.user);
   const account = await Account.findById(req.user.account);
 
   if (closet == null) {
