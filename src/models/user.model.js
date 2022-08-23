@@ -3,6 +3,7 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
 const { roles } = require('../config/roles');
+const { genders } = require('../config/genders');
 
 const userSchema = mongoose.Schema(
   {
@@ -59,6 +60,15 @@ const userSchema = mongoose.Schema(
     account: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'Account',
+      required: false,
+    },
+    gender: {
+      type: String,
+      enum: genders,
+      required: false,
+    },
+    age: {
+      type: Number,
       required: false,
     },
   },

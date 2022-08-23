@@ -12,6 +12,8 @@ const register = catchAsync(async (req, res) => {
     password: req.body.password,
     name: req.body.name,
     profilePicture: filePath.Location,
+    gender: req.body.gender,
+    age: req.body.age,
   });
 
   const tokens = await tokenService.generateAuthTokens(user);
