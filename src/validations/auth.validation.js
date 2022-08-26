@@ -3,12 +3,27 @@ const { password } = require('./custom.validation');
 
 const register = {
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required().custom(password),
-    name: Joi.string().required(),
+    email: Joi.string().required().email().messages({
+      'string.base': `Veld "email" moet tekst bevatten.`,
+      'string.empty': `Veld "email" mag niet leeg zijn.`,
+      'string.email': `Veld "email" moet een emailadres zijn.`,
+      'any.required': `Veld "email" is verplicht.`,
+    }),
+    password: Joi.string().required().custom(password).messages({
+      'string.base': `Veld "wachtwoord" moet tekst bevatten.`,
+      'string.empty': `Veld "wachtwoord" mag niet leeg zijn.`,
+      'any.required': `Veld "wachtwoord" is verplicht.`,
+    }),
+    name: Joi.string().required().messages({
+      'string.base': `Veld "voornaam" moet tekst bevatten.`,
+      'string.empty': `Veld "voornaam" mag niet leeg zijn.`,
+      'any.required': `Veld "voornaam" is verplicht.`,
+    }),
     deviceId: Joi.string().required(),
     gender: Joi.string().optional().allow(''),
-    age: Joi.number().optional().allow(''),
+    age: Joi.number().optional().allow('').messages({
+      'number.base': `Veld "leeftijd" moet nummers bevatten.`,
+    }),
   }),
 };
 
