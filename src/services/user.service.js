@@ -13,7 +13,7 @@ const createUser = async (userBody, account) => {
   let user = new User();
   if (typeof userBody.email !== 'undefined') {
     if (await User.isEmailTaken(userBody.email)) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Email is al in gebruik.');
     }
 
     user = new User({
@@ -91,10 +91,10 @@ const getUserByDeviceId = async (deviceId) => {
 const updateUserById = async (userId, updateBody) => {
   const user = await getUserById(userId);
   if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Gebruik is niet gevonden.');
   }
   if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Email is al in gebruik.');
   }
   Object.assign(user, updateBody);
   await user.save();
