@@ -11,7 +11,7 @@ const upload = multer();
 router
   .route('/register')
   .post(upload.single('image'), [auth(), validate(authValidation.register)], function (req, res, next) {
-    if (req.file.buffer === undefined) {
+    if (!req.files) {
       return res.status(400).send({ message: 'Je moet een profielfoto uploaden.' });
     }
     return authController.register(req, res, next);
