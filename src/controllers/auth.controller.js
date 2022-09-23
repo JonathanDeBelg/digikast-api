@@ -4,17 +4,21 @@ const { authService, userService, tokenService, emailService, accountService } =
 const { uploadFile } = require('../utils/AWSFileUploader');
 
 const register = catchAsync(async (req, res) => {
-  const filePath = await uploadFile(req.file.buffer, req);
-  const user = await userService.getUserByDeviceId(req.body.deviceId);
-
-  await userService.updateUserById(user.id, {
+  const body = {
     email: req.body.email,
     password: req.body.password,
     name: req.body.name,
-    profilePicture: filePath.Location,
     gender: req.body.gender,
     age: req.body.age,
-  });
+  };
+
+  if (req.file) {
+    body.filePath = await uploadFile(req.file.buffer, req);
+  }
+
+  const user = await userService.getUserByDeviceId(req.body.deviceId);
+
+  await userService.updateUserById(user.id, body);
 
   const tokens = await tokenService.generateAuthTokens(user);
   const newUser = await userService.getUserByEmail(req.body.email);
