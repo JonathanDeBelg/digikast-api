@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService, accountService } = require('../services');
-const { uploadFile } = require('../utils/AWSFileUploader');
+const { uploadFile, removeFile} = require('../utils/AWSFileUploader');
 
 const register = catchAsync(async (req, res) => {
   const body = {
@@ -82,12 +82,13 @@ const loginDevice = catchAsync(async (req, res) => {
 
 const changeProfile = catchAsync(async (req, res) => {
   const user = await userService.getUserByDeviceId(req.body.deviceId);
-
+  console.log(user.filePath);
   if (req.file) {
-    const filePath = await uploadFile(req.file.buffer, req);
-    const body = {
-      filePath,
-    };
+    // await removeFile(user.filePath, user._id);
+    // const filePath = await uploadFile(req.file.buffer, req);
+    // const body = {
+    //   filePath,
+    // };
 
     await userService.updateUserById(user.id, body);
   }
@@ -106,7 +107,7 @@ module.exports = {
   resetPassword,
   sendVerificationEmail,
   verifyEmail,
-
+  changeProfile,
   registerDevice,
   loginDevice,
 };

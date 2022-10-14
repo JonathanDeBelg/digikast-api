@@ -25,7 +25,7 @@ router.post('/verify-email', validate(authValidation.verifyEmail), authControlle
 router
   .route('/change-profile')
   .post(upload.single('image'), [auth()], function (req, res, next) {
-    return authController.register(req, res, next);
+    return authController.changeProfile(req, res, next);
   });
 
 router.post('/device/register', validate(authValidation.registerDevice), authController.registerDevice);
