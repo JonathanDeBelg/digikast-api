@@ -11,6 +11,7 @@ const clothingTypes = {
   LONGBOTTOMS: 'Lange broek',
   DRESS: 'Jurkje',
   SKIRT: 'Rokje',
+  TOP: 'Topjes',
 };
 
 const colourTypes = {
@@ -26,6 +27,7 @@ const colourTypes = {
   ORANGE: 'Oranje',
   BEIGE: 'Beige',
   BROWN: 'Bruin',
+  PRINTS: 'Prints',
 };
 
 const occasions = {

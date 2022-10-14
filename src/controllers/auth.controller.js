@@ -22,6 +22,8 @@ const register = catchAsync(async (req, res) => {
 
   const tokens = await tokenService.generateAuthTokens(user);
   const newUser = await userService.getUserByEmail(req.body.email);
+
+  /* await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken); */
   res.status(httpStatus.CREATED).send({ user: newUser, tokens });
 });
 
@@ -44,7 +46,7 @@ const refreshTokens = catchAsync(async (req, res) => {
 
 const forgotPassword = catchAsync(async (req, res) => {
   const resetPasswordToken = await tokenService.generateResetPasswordToken(req.body.email);
-  await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken);
+  // await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken);
   res.status(httpStatus.NO_CONTENT).send();
 });
 
@@ -55,7 +57,7 @@ const resetPassword = catchAsync(async (req, res) => {
 
 const sendVerificationEmail = catchAsync(async (req, res) => {
   const verifyEmailToken = await tokenService.generateVerifyEmailToken(req.user);
-  await emailService.sendVerificationEmail(req.user.email, verifyEmailToken);
+  // await emailService.sendVerificationEmail(req.user.email, verifyEmailToken);
   res.status(httpStatus.NO_CONTENT).send();
 });
 
@@ -76,6 +78,23 @@ const loginDevice = catchAsync(async (req, res) => {
   const user = await authService.loginUserWithDeviceId(deviceId);
   const tokens = await tokenService.generateAuthTokens(user);
   res.send({ user, tokens });
+});
+
+const changeProfile = catchAsync(async (req, res) => {
+  const user = await userService.getUserByDeviceId(req.body.deviceId);
+
+  if (req.file) {
+    const filePath = await uploadFile(req.file.buffer, req);
+    const body = {
+      filePath,
+    };
+
+    await userService.updateUserById(user.id, body);
+  }
+
+  const tokens = await tokenService.generateAuthTokens(user);
+  /* await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken); */
+  res.status(httpStatus.CREATED).send({ user, tokens });
 });
 
 module.exports = {
