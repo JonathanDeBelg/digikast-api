@@ -89,10 +89,9 @@ const changeProfile = catchAsync(async (req, res) => {
     }
     const filePath = await uploadFile(req.file.buffer, req);
     const body = {
-      filePath,
+      filePath: filePath.Location,
     };
-
-    console.log(body);
+    console.log(filePath.Location);
 
     await userService.updateUserById(user.id, body);
   }
