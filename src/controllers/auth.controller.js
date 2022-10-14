@@ -82,20 +82,21 @@ const loginDevice = catchAsync(async (req, res) => {
 
 const changeProfile = catchAsync(async (req, res) => {
   const user = await userService.getUserByDeviceId(req.body.deviceId);
-  console.log(user.filePath);
+
   if (req.file) {
-    // await removeFile(user.filePath, user._id);
-    // const filePath = await uploadFile(req.file.buffer, req);
-    // const body = {
-    //   filePath,
-    // };
+    if (user.filePath !== undefined) {
+      await removeFile(user.filePath, user._id);
+    }
+    const filePath = await uploadFile(req.file.buffer, req);
+    const body = {
+      filePath,
+    };
 
     await userService.updateUserById(user.id, body);
   }
 
-  const tokens = await tokenService.generateAuthTokens(user);
   /* await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken); */
-  res.status(httpStatus.CREATED).send({ user, tokens });
+  res.status(httpStatus.CREATED).send({ user });
 });
 
 module.exports = {
