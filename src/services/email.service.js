@@ -1,8 +1,10 @@
 const nodemailer = require('nodemailer');
 const config = require('../config/config');
 const logger = require('../config/logger');
+const {registerMailTemplate} = require("../../assets/emails/register");
 
 const transport = nodemailer.createTransport(config.email.smtp);
+
 /* istanbul ignore next */
 if (config.env !== 'test') {
   transport
@@ -19,7 +21,7 @@ if (config.env !== 'test') {
  * @returns {Promise}
  */
 const sendEmail = async (to, subject, text) => {
-  const msg = { from: config.email.from, to, subject, text };
+  const msg = { from: config.email.from, to, subject, text, template: 'register' };
   await transport.sendMail(msg);
 };
 
@@ -55,14 +57,50 @@ If you did not create an account, then ignore this email.`;
   await sendEmail(to, subject, text);
 };
 
-const sendRegisterEmail = async (to, token) => {
+const sendRegisterEmail = async (user) => {
   const subject = 'Aanmelding voor Digikast';
-  // replace this url with the link to the email verification page of your front-end app
-  const verificationEmailUrl = `http://link-to-app/verify-email?token=${token}`;
-  const text = `Dear user,
-To verify your email, click on this link: ${verificationEmailUrl}
-If you did not create an account, then ignore this email.`;
-  await sendEmail(to, subject, text);
+  const text = `Hallo ${user.name},
+
+Wat leuk dat je een account hebt aangemaakt bij Digikast.
+Vanaf nu wordt het organiseren van je kleding een stuk gemakkelijker!
+
+Ga snel aan de slag met het digitaliseren van je eigen kast.
+Weten hoe Digikast precies werkt? Open dan het linkje voor een
+uitgebreide handleiding. Hierin vind je onder andere hoe je
+kasten/koffers, kledingstukken en outfits moet toevoegen. (link naar de site met de uitleg en filmpje)
+
+Nogmaals zijn wij blij je te verwelkomen bij Digikast, als er vragen
+zijn dan staan wij voor je klaar via info@digikast.nl!
+
+
+Met vriendelijke kledinggroet,
+Team Digikast`;
+  const message = {
+    to: user.email,
+    subject,
+    text,
+
+    html: await registerMailTemplate(user),
+
+    attachments: [
+      {
+        filename: 'logo.png',
+        path: `${__dirname}/../../assets/img/logo.png`,
+        cid: 'logo', // should be as unique as possible
+      },
+    ],
+  };
+
+  await transport.sendMail(message, (error, info) => {
+    if (error) {
+      console.log('Error occurred');
+      console.log(error.message);
+      return process.exit(1);
+    }
+
+    console.log('Message sent successfully!');
+    console.log(nodemailer.getTestMessageUrl(info));
+  });
 };
 
 module.exports = {
@@ -70,5 +108,5 @@ module.exports = {
   sendEmail,
   sendResetPasswordEmail,
   sendVerificationEmail,
-  sendRegisterEmail
+  sendRegisterEmail,
 };

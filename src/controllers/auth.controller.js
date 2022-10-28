@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService, accountService } = require('../services');
-const { uploadFile, removeFile} = require('../utils/AWSFileUploader');
+const { uploadFile, removeFile } = require('../utils/AWSFileUploader');
 
 const register = catchAsync(async (req, res) => {
   const body = {
@@ -22,8 +22,7 @@ const register = catchAsync(async (req, res) => {
 
   const tokens = await tokenService.generateAuthTokens(user);
   const newUser = await userService.getUserByEmail(req.body.email);
-
-  /* await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken); */
+  await emailService.sendRegisterEmail(user);
   res.status(httpStatus.CREATED).send({ user: newUser, tokens });
 });
 
@@ -91,7 +90,6 @@ const changeProfile = catchAsync(async (req, res) => {
     const body = {
       profilePicture: filePath.Location,
     };
-    console.log(filePath.Location);
 
     await userService.updateUserById(user.id, body);
   }
