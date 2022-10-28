@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const config = require('../config/config');
 const logger = require('../config/logger');
-const {registerMailTemplate} = require("../../assets/emails/register");
+const { registerMailTemplate } = require('../../assets/emails/register');
 
 const transport = nodemailer.createTransport(config.email.smtp);
 
@@ -86,20 +86,15 @@ Team Digikast`;
       {
         filename: 'logo.png',
         path: `${__dirname}/../../assets/img/logo.png`,
-        cid: 'logo', // should be as unique as possible
+        cid: 'logo',
       },
     ],
   };
 
   await transport.sendMail(message, (error, info) => {
     if (error) {
-      console.log('Error occurred');
-      console.log(error.message);
       return process.exit(1);
     }
-
-    console.log('Message sent successfully!');
-    console.log(nodemailer.getTestMessageUrl(info));
   });
 };
 
