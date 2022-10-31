@@ -10,6 +10,7 @@ const register = catchAsync(async (req, res) => {
     name: req.body.name,
     gender: req.body.gender,
     age: req.body.age,
+    deviceId: undefined,
   };
 
   if (req.file) {
@@ -17,7 +18,6 @@ const register = catchAsync(async (req, res) => {
   }
 
   const user = await userService.getUserByDeviceId(req.body.deviceId);
-
   await userService.updateUserById(user.id, body);
 
   const tokens = await tokenService.generateAuthTokens(user);
