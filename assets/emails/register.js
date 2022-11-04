@@ -1,6 +1,6 @@
 const registerMailTemplate = async (user) => {
   return `
-    <p>Hallo ${user.name},</p>
+    <p>Hallo ${user},</p>
     <p>Wat leuk dat je een account hebt aangemaakt bij Digikast.
     Vanaf nu wordt het organiseren van je kleding een stuk gemakkelijker!</p>
 

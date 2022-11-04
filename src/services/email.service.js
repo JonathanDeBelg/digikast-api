@@ -80,6 +80,47 @@ Team Digikast`;
     subject,
     text,
 
+    html: await registerMailTemplate(user.name),
+
+    attachments: [
+      {
+        filename: 'logo.png',
+        path: `${__dirname}/../../assets/img/logo.png`,
+        cid: 'logo',
+      },
+    ],
+  };
+
+  await transport.sendMail(message, (error, info) => {
+    if (error) {
+      return process.exit(1);
+    }
+  });
+};
+
+const sendTestEmail = async (user) => {
+  const subject = 'Aanmelding voor Digikast';
+  const text = `Hallo ${user},
+
+Wat leuk dat je een account hebt aangemaakt bij Digikast.
+Vanaf nu wordt het organiseren van je kleding een stuk gemakkelijker!
+
+Ga snel aan de slag met het digitaliseren van je eigen kast.
+Weten hoe Digikast precies werkt? Open dan het linkje voor een
+uitgebreide handleiding. Hierin vind je onder andere hoe je
+kasten/koffers, kledingstukken en outfits moet toevoegen. (link naar de site met de uitleg en filmpje)
+
+Nogmaals zijn wij blij je te verwelkomen bij Digikast, als er vragen
+zijn dan staan wij voor je klaar via info@digikast.nl!
+
+
+Met vriendelijke kledinggroet,
+Team Digikast`;
+  const message = {
+    to: user,
+    subject,
+    text,
+
     html: await registerMailTemplate(user),
 
     attachments: [
@@ -104,4 +145,5 @@ module.exports = {
   sendResetPasswordEmail,
   sendVerificationEmail,
   sendRegisterEmail,
+  sendTestEmail,
 };
