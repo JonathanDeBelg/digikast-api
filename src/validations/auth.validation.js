@@ -80,6 +80,12 @@ const loginDevice = {
   }),
 };
 
+const removeDevice = {
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+  }),
+};
+
 module.exports = {
   register,
   login,
@@ -88,7 +94,7 @@ module.exports = {
   forgotPassword,
   resetPassword,
   verifyEmail,
-
+  removeDevice,
   registerDevice,
   loginDevice,
 };

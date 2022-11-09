@@ -30,6 +30,7 @@ router
 
 router.post('/device/register', validate(authValidation.registerDevice), authController.registerDevice);
 router.post('/device/login', validate(authValidation.loginDevice), authController.loginDevice);
+router.post('/device/remove', validate(authValidation.removeDevice), authController.removeDevice);
 
 module.exports = router;
 

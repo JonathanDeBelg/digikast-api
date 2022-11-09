@@ -79,6 +79,18 @@ const loginDevice = catchAsync(async (req, res) => {
   res.send({ user, tokens });
 });
 
+const removeDevice = catchAsync(async (req, res) => {
+  const { email } = req.body;
+  let user = await userService.getUserByEmail(email);
+
+  const body = {
+    deviceId: undefined,
+  };
+
+  user = await userService.updateUserById(user.id, body);
+  res.send({ user });
+});
+
 const changeProfile = catchAsync(async (req, res) => {
   const user = await userService.getUserByDeviceId(req.body.deviceId);
 
@@ -110,4 +122,5 @@ module.exports = {
   changeProfile,
   registerDevice,
   loginDevice,
+  removeDevice,
 };
