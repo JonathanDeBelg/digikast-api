@@ -93,18 +93,18 @@ const removeDevice = catchAsync(async (req, res) => {
 
 const changeProfile = catchAsync(async (req, res) => {
   const user = req.user;
-  console.log(req.file);
-  // if (req.file) {
-  //   if (user.filePath !== undefined) {
-  //     await removeFile(user.filePath, user._id);
-  //   }
-  //   const filePath = await uploadFile(req.file.buffer, req);
-  //   const body = {
-  //     profilePicture: filePath.Location,
-  //   };
-  //
-  //   await userService.updateUserById(user.id, body);
-  // }
+
+  if (req.file) {
+    if (user.filePath !== undefined) {
+      await removeFile(user.filePath, user._id);
+    }
+    const filePath = await uploadFile(req.file.buffer, req);
+    const body = {
+      profilePicture: filePath.Location,
+    };
+
+    await userService.updateUserById(user.id, body);
+  }
 
   /* await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken); */
   res.status(httpStatus.CREATED).send({ user });
