@@ -100,7 +100,6 @@ const queryAllClothes = async (account) => {
   const clothes = await ClosetItem.find({
     account,
   }).populate('closet');
-  console.log(clothes);
   return clothes;
 };
 
