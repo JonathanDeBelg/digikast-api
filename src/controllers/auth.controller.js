@@ -92,8 +92,8 @@ const removeDevice = catchAsync(async (req, res) => {
 });
 
 const changeProfile = catchAsync(async (req, res) => {
-  // const user = await userService.getU(req.body.deviceId);
-  console.log(req.user);
+  const user = req.user;
+  console.log(req.file);
   // if (req.file) {
   //   if (user.filePath !== undefined) {
   //     await removeFile(user.filePath, user._id);
@@ -105,9 +105,9 @@ const changeProfile = catchAsync(async (req, res) => {
   //
   //   await userService.updateUserById(user.id, body);
   // }
-  //
-  // /* await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken); */
-  // res.status(httpStatus.CREATED).send({ user });
+
+  /* await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken); */
+  res.status(httpStatus.CREATED).send({ user });
 });
 
 module.exports = {
