@@ -92,8 +92,8 @@ const removeDevice = catchAsync(async (req, res) => {
 });
 
 const changeProfile = catchAsync(async (req, res) => {
-  const user = await userService.getUserByDeviceId(req.body.deviceId);
-  console.log(user);
+  const user = await userService.getU(req.body.deviceId);
+  console.log(req.user);
   if (req.file) {
     if (user.filePath !== undefined) {
       await removeFile(user.filePath, user._id);
