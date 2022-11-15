@@ -17,7 +17,7 @@ const register = catchAsync(async (req, res) => {
     body.filePath = await uploadFile(req.file.buffer, req);
   }
 
-  const user = await userService.getUserByDeviceId(req.body.deviceId);
+  const user = await userService.getUserByDeviceId(req.user.deviceId);
   await userService.updateUserById(user.id, body);
 
   const tokens = await tokenService.generateAuthTokens(user);
