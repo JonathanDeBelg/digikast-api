@@ -9,9 +9,12 @@ const register = catchAsync(async (req, res) => {
     password: req.body.password,
     name: req.body.name,
     gender: req.body.gender,
-    age: req.body.age,
     deviceId: undefined,
   };
+
+  if(req.body.age) {
+    body.age = req.body.age;
+  }
 
   if (req.file) {
     body.filePath = await uploadFile(req.file.buffer, req);
