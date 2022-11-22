@@ -26,6 +26,7 @@ const register = catchAsync(async (req, res) => {
   const tokens = await tokenService.generateAuthTokens(user);
   const newUser = await userService.getUserByEmail(req.body.email);
   await emailService.sendRegisterEmail(newUser);
+  await emailService.sendRegisterEmailAdmin(newUser);
   res.status(httpStatus.CREATED).send({ user: newUser, tokens });
 });
 

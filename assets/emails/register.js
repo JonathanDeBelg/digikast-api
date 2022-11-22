@@ -19,6 +19,22 @@ const registerMailTemplate = async (user) => {
   `;
 };
 
+const registerMailAdminTemplate = async (user) => {
+  return `
+    <p>${user.name} heeft een nieuw account aangemaakt,</p>
+    <p>Zie onderstaand de logingeggevens:</p>
+    <ul>
+        <li>Email: ${user.email}</li>
+        <li>Geslacht: ${user.gender}</li>
+        <li>Leeftijd: ${user.age}</li>
+    </ul>
+
+    <p>Met vriendelijke kledinggroet,<br>
+    De App</p>
+  `;
+};
+
 module.exports = {
   registerMailTemplate,
+  registerMailAdminTemplate,
 };

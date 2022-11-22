@@ -93,7 +93,7 @@ const updateUserById = async (userId, updateBody) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Gebruiker is niet gevonden.');
   }
-  if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
+  if (await User.isEmailTaken(updateBody.email, userId)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email is al in gebruik.');
   }
   Object.assign(user, updateBody);

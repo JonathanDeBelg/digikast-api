@@ -1,9 +1,7 @@
 const nodemailer = require('nodemailer');
 const config = require('../config/config');
 const logger = require('../config/logger');
-const { registerMailTemplate } = require('../../assets/emails/register');
-const ApiError = require("../utils/ApiError");
-const httpStatus = require("http-status");
+const { registerMailTemplate, registerMailAdminTemplate} = require('../../assets/emails/register');
 
 const transport = nodemailer.createTransport(config.email.smtp);
 
@@ -100,6 +98,33 @@ Team Digikast`;
   });
 };
 
+const sendRegisterEmailAdmin = async (user) => {
+  const subject = 'Digikast account aanmelding';
+  const text = `${user.name} heeft een nieuw account aangemaakt,
+
+Zie onderstaand de gebruikersgegevens:
+- Email: ${user.email}
+- Geslacht: ${user.gender}
+- Leeftijd' ${user.age}
+
+
+Met vriendelijke kledinggroet,
+Team Digikast`;
+  const message = {
+    to: config.env === 'production' ? config.email.smtp.auth.user : config.email.dev,
+    subject,
+    text,
+
+    html: await registerMailAdminTemplate(user),
+  };
+
+  await transport.sendMail(message, (error, info) => {
+    if (error) {
+      console.log("Emailadress not known");
+    }
+  });
+};
+
 const sendTestEmail = async (user) => {
   const subject = 'Aanmelding voor Digikast';
   const text = `Hallo ${user},
@@ -147,5 +172,6 @@ module.exports = {
   sendResetPasswordEmail,
   sendVerificationEmail,
   sendRegisterEmail,
+  sendRegisterEmailAdmin,
   sendTestEmail,
 };
