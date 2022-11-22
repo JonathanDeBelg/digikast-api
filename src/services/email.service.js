@@ -2,6 +2,8 @@ const nodemailer = require('nodemailer');
 const config = require('../config/config');
 const logger = require('../config/logger');
 const { registerMailTemplate } = require('../../assets/emails/register');
+const ApiError = require("../utils/ApiError");
+const httpStatus = require("http-status");
 
 const transport = nodemailer.createTransport(config.email.smtp);
 
@@ -93,7 +95,7 @@ Team Digikast`;
 
   await transport.sendMail(message, (error, info) => {
     if (error) {
-      return process.exit(1);
+      console.log("Emailadress not known");
     }
   });
 };
