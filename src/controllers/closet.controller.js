@@ -20,7 +20,6 @@ const getClosets = catchAsync(async (req, res) => {
     };
   }
 
-  console.log(result);
   res.send(result);
 });
 
