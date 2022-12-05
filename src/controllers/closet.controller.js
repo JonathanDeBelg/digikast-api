@@ -8,7 +8,6 @@ const getClosets = catchAsync(async (req, res) => {
   const accountId = await Account.findById(req.user.account);
   const closets = await closetService.queryClosets(accountId);
   const result = {};
-  console.log(closets);
 
   for (const key in closets) {
     const garments = await clothingService.queryLastAddedNoClothes(closets[key].id, 3);
@@ -21,6 +20,7 @@ const getClosets = catchAsync(async (req, res) => {
     };
   }
 
+  console.log(result);
   res.send(result);
 });
 
