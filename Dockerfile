@@ -1,4 +1,6 @@
 FROM node:alpine
+FROM node:15.0.0-alpine AS node
+
 
 RUN mkdir -p /usr/src/node-app && chown -R node:node /usr/src/node-app
 
