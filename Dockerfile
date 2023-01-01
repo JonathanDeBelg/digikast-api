@@ -1,4 +1,5 @@
 FROM node:15.0.0-alpine AS node
+FROM keymetrics/pm2:latest-alpine
 
 RUN npm install -g pm2
 
