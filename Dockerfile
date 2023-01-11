@@ -12,7 +12,7 @@ COPY package.json yarn.lock ./
 
 USER node
 
-RUN yarn installg
+RUN yarn install
 
 COPY --chown=node:node . .
 
