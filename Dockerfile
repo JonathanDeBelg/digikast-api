@@ -10,7 +10,7 @@ WORKDIR /usr/src/node-app
 COPY package*.json yarn.lock ./
 
 RUN yarn install --pure-lockfile
-RUN yarn install mongoose
+RUN yarn add mongoose
 
 USER node
 
