@@ -12,7 +12,7 @@ COPY package*.json yarn.lock ./
 USER node
 
 RUN yarn install --pure-lockfile
-RUN yarn add mongoose
+RUN sudo yarn add mongoose
 
 COPY --chown=node:node . .
 
