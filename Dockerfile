@@ -9,10 +9,10 @@ WORKDIR /usr/src/node-app
 
 COPY package*.json yarn.lock ./
 
-USER node
-
 RUN yarn install --pure-lockfile
 RUN yarn install mongoose
+
+USER node
 
 COPY --chown=node:node . .
 
