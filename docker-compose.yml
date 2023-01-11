@@ -18,7 +18,7 @@ services:
   mongodb:
     image: mongo:4.2.1-bionic
     ports:
-      - '27017:27017'
+      - '0.0.0.0:27017:27017'
     volumes:
       - dbdata:/data/db
     networks:
@@ -32,12 +32,14 @@ services:
     environment:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
       - ME_CONFIG_MONGODB_ADMINPASSWORD=admin
-      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_SERVER=mongo
       - ME_CONFIG_MONGODB_PORT=27017
     depends_on:
       - mongodb
     ports:
-      - "8888:8081"
+      - "0.0.0.0:8081:8081"
+    networks:
+      - node-network
 
 volumes:
   dbdata:
