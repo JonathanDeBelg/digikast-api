@@ -34,7 +34,7 @@ const getGarmentSetsByClosetId = catchAsync(async (req, res) => {
 });
 
 const getAllGarmentSets = catchAsync(async (req, res) => {
-  console.log(req.user);
+  console.log(req.body);
   const accountId = await Account.findById(req.user.account);
   const result = await clothingService.queryGarmentSets(accountId);
   res.send(result);
