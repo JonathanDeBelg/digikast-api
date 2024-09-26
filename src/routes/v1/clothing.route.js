@@ -12,7 +12,7 @@ router.route('/closet/:closet/').get(auth(), clothingController.getClothes);
 router.route('/set/:closet').get(auth(), clothingController.getGarmentSetsByClosetId);
 router
   .route('/set/')
-  .get(clothingController.getAllGarmentSets)
+  .get(auth(), clothingController.getAllGarmentSets)
   .post([auth(), validate(clothingValidation.createGarmentSet)], clothingController.createGarmentSet);
 
 router
