@@ -14,6 +14,7 @@ const getClothes = catchAsync(async (req, res) => {
 });
 
 const getAllClothes = catchAsync(async (req, res) => {
+  console.log(req.user);
   const accountId = await Account.findById(req.user.account);
   const result = await clothingService.queryAllClothes(accountId);
   res.send(result);
@@ -34,7 +35,6 @@ const getGarmentSetsByClosetId = catchAsync(async (req, res) => {
 });
 
 const getAllGarmentSets = catchAsync(async (req, res) => {
-  console.log(req.user);
   const accountId = await Account.findById(req.user.account);
   const result = await clothingService.queryGarmentSets(accountId);
   res.send(result);
