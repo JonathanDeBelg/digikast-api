@@ -57,7 +57,7 @@ const queryGarmentSetsByCloset = async (accountId, closetId) => {
 
     garmentItems.push({
       setId,
-      name: garmentSets[1].name,
+      name: garmentSets[1].name ?? "",
       closet: garmentSets[1].closet,
       items: garmentSets.map((element) => element.closetItem),
     });
