@@ -81,10 +81,12 @@ const queryGarmentSets = async (accountId) => {
       account: accountId,
     }).populate('closetItem');
 
+    const garmentSet = garmentSets[1] || garmentSets[0] || {};
+    
     garmentItems.push({
       setId,
-      name: garmentSets[1].name ?? "",
-      closet: garmentSets[1].closet,
+      name: garmentSet.name ?? "",
+      closet: garmentSet.closet ?? "",
       items: garmentSets.map((element) => element.closetItem),
     });
   }
