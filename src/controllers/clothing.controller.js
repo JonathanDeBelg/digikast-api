@@ -48,12 +48,14 @@ const getComperableGarments = catchAsync(async (req, res) => {
 
 const createGarment = catchAsync(async (req, res) => {
   let filePath = '';
-  if (req.body.closetItemType === 'garment') {
-    const removedBackground = await removeBackground(req.file);
-    filePath = await uploadFile(removedBackground, req);
-  } else {
-    filePath = await uploadFile(req.file.buffer, req);
-  }
+  // if (req.body.closetItemType === 'garment') {
+  //   const removedBackground = await removeBackground(req.file);
+  //   filePath = await uploadFile(removedBackground, req);
+  // } else {
+  //   filePath = await uploadFile(req.file.buffer, req);
+  // }
+
+  filePath = await uploadFile(req.file.buffer, req);
   const closet = await Closet.findById(req.body.closetId);
   const account = await Account.findById(req.user.account);
 
