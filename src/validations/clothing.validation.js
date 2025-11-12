@@ -17,12 +17,22 @@ const createGarmentSet = {
     name: Joi.string().optional().allow(''),
     closetId: Joi.string().required(),
     items: Joi.any().required(),
-    occasion: Joi.string().required(),
+    occasion: Joi.string().optional(),
     favorite: Joi.bool().required(),
+  }),
+};
+
+const updateGarmentSet = {
+  body: Joi.object().keys({
+    name: Joi.string().optional().allow(''),
+    items: Joi.any().optional(),
+    occasion: Joi.string().optional(),
+    favorite: Joi.bool().optional(),
   }),
 };
 
 module.exports = {
   create,
   createGarmentSet,
+  updateGarmentSet,
 };

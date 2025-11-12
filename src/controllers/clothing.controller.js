@@ -40,6 +40,12 @@ const getAllGarmentSets = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const getGarmentSet = catchAsync(async (req, res) => {
+  const account = await Account.findById(req.user.account);
+  const result = await clothingService.getGarmentSetBySetId(req.params.setId, account);
+  res.send(result);
+});
+
 const getComperableGarments = catchAsync(async (req, res) => {
   const accountId = await Account.findById(req.user.account);
   const garments = await clothingService.getComparableItemsByGarmentId(accountId, req.params.garment);
@@ -89,11 +95,23 @@ const changeGarmentCloset = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send('Successfully changed closet');
 });
 
+const updateGarmentSet = catchAsync(async (req, res) => {
+  const account = await Account.findById(req.user.account);
+  const garmentSet = await clothingService.updateGarmentSetById(req.params.setId, req.body, account);
+  res.status(httpStatus.OK).send(garmentSet);
+});
+
+const deleteGarmentSet = catchAsync(async (req, res) => {
+  await clothingService.deleteGarmentSetById(req.params.setId);
+  res.status(httpStatus.OK).send('Successfully deleted garment set');
+});
+
 module.exports = {
   getClothes,
   getAllClothes,
   getGarment,
   getGarmentSetsByClosetId,
+  getGarmentSet,
   getComperableGarments,
   createGarment,
   updateGarment,
@@ -101,4 +119,6 @@ module.exports = {
   createGarmentSet,
   getAllGarmentSets,
   changeGarmentCloset,
+  updateGarmentSet,
+  deleteGarmentSet,
 };

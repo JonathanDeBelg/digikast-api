@@ -26,6 +26,12 @@ const closetItemSchema = mongoose.Schema(
       ref: 'Account',
       required: true,
     },
+    occasion: {
+      type: String,
+    },
+    favorite: {
+      type: Boolean,
+    },
   },
   {
     timestamps: true,

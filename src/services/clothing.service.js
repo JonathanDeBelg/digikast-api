@@ -61,6 +61,8 @@ const queryGarmentSetsByCloset = async (accountId, closetId) => {
       setId,
       name: garmentSet.name ?? "",
       closet: garmentSet.closet ?? "",
+      occasion: garmentSet.occasion,
+      favorite: garmentSet.favorite,
       items: garmentSets.map((element) => element.closetItem),
     });
   }
@@ -84,11 +86,13 @@ const queryGarmentSets = async (accountId) => {
     }).populate('closetItem');
 
     const garmentSet = garmentSets[1] || garmentSets[0] || {};
-    
+
     garmentItems.push({
       setId,
       name: garmentSet.name ?? "",
       closet: garmentSet.closet ?? "",
+      occasion: garmentSet.occasion,
+      favorite: garmentSet.favorite,
       items: garmentSets.map((element) => element.closetItem),
     });
   }
@@ -133,6 +137,8 @@ const createGarmentSet = async (req, closet, account) => {
         setId,
         closetItem: item,
         name: req.body.name,
+        occasion: req.body.occasion,
+        favorite: req.body.favorite,
         closet,
         account,
       });
@@ -224,6 +230,76 @@ const queryLastAddedNoClothes = async (closet, limit) => {
   }).limit(limit);
 };
 
+const updateGarmentSetById = async (setId, updateRequest, account) => {
+  const garmentSets = await GarmentSet.find({ setId, account });
+
+  if (!garmentSets || garmentSets.length === 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Garment set not found');
+  }
+
+  // If items are being updated, we need to delete old entries and create new ones
+  if (updateRequest.items) {
+    await GarmentSet.deleteMany({ setId, account });
+
+    await Promise.all(
+      JSON.parse(updateRequest.items).map((item) => {
+        return GarmentSet.create({
+          setId,
+          closetItem: item,
+          name: updateRequest.name || garmentSets[0].name,
+          occasion: updateRequest.occasion !== undefined ? updateRequest.occasion : garmentSets[0].occasion,
+          favorite: updateRequest.favorite !== undefined ? updateRequest.favorite : garmentSets[0].favorite,
+          closet: garmentSets[0].closet,
+          account,
+        });
+      })
+    );
+  } else {
+    // Update only name, occasion, or favorite fields across all items in the set
+    await GarmentSet.updateMany(
+      { setId, account },
+      {
+        $set: {
+          ...(updateRequest.name !== undefined && { name: updateRequest.name }),
+          ...(updateRequest.occasion !== undefined && { occasion: updateRequest.occasion }),
+          ...(updateRequest.favorite !== undefined && { favorite: updateRequest.favorite }),
+        },
+      }
+    );
+  }
+
+  return { setId, message: 'Garment set updated successfully' };
+};
+
+const getGarmentSetBySetId = async (setId, accountId) => {
+  const garmentSets = await GarmentSet.find({ setId, account: accountId }).populate('closetItem');
+
+  if (!garmentSets || garmentSets.length === 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Garment set not found');
+  }
+
+  const garmentSet = garmentSets[0];
+
+  return {
+    setId,
+    name: garmentSet.name ?? "",
+    closet: garmentSet.closet ?? "",
+    occasion: garmentSet.occasion,
+    favorite: garmentSet.favorite,
+    items: garmentSets.map((element) => element.closetItem),
+  };
+};
+
+const deleteGarmentSetById = async (setId) => {
+  const garmentSets = await GarmentSet.find({ setId });
+
+  if (!garmentSets || garmentSets.length === 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Garment set not found');
+  }
+
+  await GarmentSet.deleteMany({ setId });
+};
+
 module.exports = {
   queryClothesByCloset,
   queryGarmentSetsByCloset,
@@ -238,4 +314,7 @@ module.exports = {
   queryLastAddedNoClothes,
   queryGarmentSets,
   copyClosetItem,
+  updateGarmentSetById,
+  getGarmentSetBySetId,
+  deleteGarmentSetById,
 };

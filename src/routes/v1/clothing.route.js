@@ -16,6 +16,12 @@ router
   .post([auth(), validate(clothingValidation.createGarmentSet)], clothingController.createGarmentSet);
 
 router
+  .route('/set/:setId')
+  .get(auth(), clothingController.getGarmentSet)
+  .put([auth(), validate(clothingValidation.updateGarmentSet)], clothingController.updateGarmentSet)
+  .delete(auth(), clothingController.deleteGarmentSet);
+
+router
   .route('/:closet/:garmentId')
   .get(auth(), clothingController.getGarment)
   .put(auth(), clothingController.updateGarment)
